@@ -16,8 +16,9 @@ import sklearn as skl
 import statsmodels.api as sm
 import streamlit as st
 
-"""##**A) Data-set presentation**
-
+st.title('**Chess Project**')
+st.header('A. Data-set presentation')
+"""
 This data-set groups data from more than 20,000 games collected from a selection of users on the site Lichess.org. This set contains:
 *  Game ID;
 *  Rated (Boolean value);
@@ -38,13 +39,11 @@ This data-set groups data from more than 20,000 games collected from a selection
 """
 
 chess_df = pd.read_csv(r'C:\Users\murar\Desktop\chess_project\chess.csv')
-
-
-chess_df.head(3)
+chess_df
 
 chess_df.info()
 
-chess_df.describe()
+st.write(chess_df.describe())
 
 """***DATA HANDLING***
 
