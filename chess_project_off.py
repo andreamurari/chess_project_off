@@ -37,13 +37,22 @@ This data-set groups data from more than 20,000 games collected from a selection
 *  Opening Name;
 *  Opening Ply (Number of moves in the opening phase);
 """
-
 chess_df = pd.read_csv(r'C:\Users\murar\Desktop\chess_project\chess.csv')
-chess_df
 
-chess_df.info()
+if st.button('SHOW DATASET'):
+    chess_df
+    if st.button('HIDE DATASET'):
+        st.button('SHOW DATASET') == False    
 
-st.write(chess_df.describe())
+if st.button('SHOW OF DATASET INFO'):
+    st.dataframe(chess_df.info()) #non funziona: correggere il metodo di stampa!!!!!!
+    if st.button('HIDE DATASET INFO'):
+        st.button('SHOW DATASET INFO') == False    
+
+if st.button('SHOW SUMMARY OF STATISTICAL PROPERTIES'):
+    st.write(chess_df.describe())
+    if st.button('HIDE SUMMARY OF STATISTICAL PROPERTIES'):
+        st.button('SHOW SUMMARY OF STATISTICAL PROPERTIES') == False   
 
 """***DATA HANDLING***
 
