@@ -18,6 +18,7 @@ import streamlit as st
 
 st.title('**Chess Project**')
 st.header('A. Data-set presentation')
+st.subheader('General informations')
 """
 This data-set groups data from more than 20,000 games collected from a selection of users on the site Lichess.org. This set contains:
 *  Game ID;
@@ -40,28 +41,25 @@ This data-set groups data from more than 20,000 games collected from a selection
 chess_df = pd.read_csv(r'C:\Users\murar\Desktop\chess_project\chess.csv')
 
 if st.button('SHOW DATASET'):
-    chess_df
     if st.button('HIDE DATASET'):
         st.button('SHOW DATASET') == False    
+    chess_df    
+
 
 if st.button('SHOW OF DATASET INFO'):
-    st.dataframe(chess_df.info()) #non funziona: correggere il metodo di stampa!!!!!!
     if st.button('HIDE DATASET INFO'):
         st.button('SHOW DATASET INFO') == False    
-
+    st.dataframe(chess_df.info()) #non funziona: correggere il metodo di stampa!!!!!!
+    
 if st.button('SHOW SUMMARY OF STATISTICAL PROPERTIES'):
-    st.write(chess_df.describe())
     if st.button('HIDE SUMMARY OF STATISTICAL PROPERTIES'):
         st.button('SHOW SUMMARY OF STATISTICAL PROPERTIES') == False   
-
-"""***DATA HANDLING***
-
-First it's generated a backup of the original data set:
-"""
+    st.write(chess_df.describe())
+st.subheader('Data handling')
 
 chess_df_backup = chess_df.copy()
 
-"""Then all the columns that will not be used are dropped and two new columns are added:
+"""All the columns that will not be used are dropped and two new columns are added:
 * "white_win" : equals 1 if winner it's white player, 0 otherwise;
 * "black_win" : equals 1 if winner it's black player, 0 otherwise.
 """
@@ -72,17 +70,19 @@ chess_df['white_win'] = ( chess_df['winner'] == 'white' ) * 1
 
 chess_df['black_win'] = ( chess_df['winner'] == 'black' ) * 1
 
-chess_df.head(3)
+"Now the data-set looks like this: "
 
+if st.button('SHOW UPDATED DATA-SET'):
+    if st.button('HIDE UPDATED DATA-SET'):
+        st.button('SHOW UPDATED DATA-SET') == True   
+    chess_df
+    
 """***GENERAL CORRELATION***
 
 Now it' ll be plotted a correlation graphs of the numerical variables in the data set.
 """
 
 chess_corr_df = chess_df.drop(['victory_status', 'winner', 'increment_code', 'opening_eco', 'opening_name'], axis=1, inplace = False )
-
-chess_corr_df
-
 chess_corr = chess_corr_df.corr()
 
 plt.figure(figsize=(8, 6))
