@@ -17,7 +17,10 @@ import statsmodels.api as sm
 import streamlit as st
 
 st.title('**Chess Project**')
+
+#DATA-SET PRESENTATIOON CHAPTER 
 st.header('A. Data-set presentation')
+#GENERAL INFO SUBSECTION
 st.subheader('General informations')
 """
 This data-set groups data from more than 20,000 games collected from a selection of users on the site Lichess.org. This set contains:
@@ -40,30 +43,34 @@ This data-set groups data from more than 20,000 games collected from a selection
 """
 chess_df = pd.read_csv(r'C:\Users\murar\Desktop\chess_project\chess.csv')
 
+#BUTTON FOR ORIGINAL DS
 if st.button('SHOW DATASET'):
     if st.button('HIDE DATASET'):
         st.button('SHOW DATASET') == False    
     chess_df    
 
-
+#BUTTON FOR CHESS_DF.INFO()
 if st.button('SHOW OF DATASET INFO'):
     if st.button('HIDE DATASET INFO'):
         st.button('SHOW DATASET INFO') == False    
-    st.dataframe(chess_df.info()) #non funziona: correggere il metodo di stampa!!!!!!
+    st.pyplot(chess_df.info()) #non funziona: correggere il metodo di stampa!!!!!!
     
+#BUTTON FOR CHESS_DF.DESCRIBE()
 if st.button('SHOW SUMMARY OF STATISTICAL PROPERTIES'):
     if st.button('HIDE SUMMARY OF STATISTICAL PROPERTIES'):
         st.button('SHOW SUMMARY OF STATISTICAL PROPERTIES') == False   
     st.write(chess_df.describe())
+
+#DATA HANDLING SUBSECTION
 st.subheader('Data handling')
 
-chess_df_backup = chess_df.copy()
+chess_df_backup = chess_df.copy() #BACKUP OF ORIGINAL DS
 
 """All the columns that will not be used are dropped and two new columns are added:
 * "white_win" : equals 1 if winner it's white player, 0 otherwise;
 * "black_win" : equals 1 if winner it's black player, 0 otherwise.
 """
-
+#DROOPING UNNECESSARY COLUMNS AND ADDED NEW ONES 
 chess_df.drop(['moves', 'white_id', 'black_id', 'id', 'created_at', 'last_move_at', 'rated'], axis=1, inplace = True )
 
 chess_df['white_win'] = ( chess_df['winner'] == 'white' ) * 1
@@ -72,33 +79,29 @@ chess_df['black_win'] = ( chess_df['winner'] == 'black' ) * 1
 
 "Now the data-set looks like this: "
 
-if st.button('SHOW UPDATED DATA-SET'):
-    if st.button('HIDE UPDATED DATA-SET'):
-        st.button('SHOW UPDATED DATA-SET') == True   
-    chess_df
-    
-"""***GENERAL CORRELATION***
+#BUTTON FOR UPDATED DS
+chess_df
+#CORRELATION SUBSECTION
+st.subheader('General correlation')    
 
-Now it' ll be plotted a correlation graphs of the numerical variables in the data set.
-"""
+"""Here you can see the correlation graphs of the numerical variables in the data set:"""
 
 chess_corr_df = chess_df.drop(['victory_status', 'winner', 'increment_code', 'opening_eco', 'opening_name'], axis=1, inplace = False )
 chess_corr = chess_corr_df.corr()
 
-plt.figure(figsize=(8, 6))
-sb.heatmap(chess_corr, annot = True, )
-
-plt.show()
+#PLOTTING CORRELATION GRAPH
+fig_corr, ax = plt.subplots(figsize=(8, 6))  
+sb.heatmap(chess_corr, annot=True)  
+st.pyplot(fig_corr)
 
 """As a first impression, the only parameters that seems to have a little correlation are:
 
 * **white_rating and black_rating:** positive correlation, this is because matchmaking software matches opponents with similar ratings.
-* **white_win and black_win:** negative correlation, obviously because if one player win, then the other loose. The correlation is not -1 because there can be some draws.
+* **white_win and black_win:** negative correlation, obviously because if one player win, then the other loose. The correlation is not -1 because there can be some draws."""
 
-## **B) Which are the most common matches outcomes? What are the most played type of matches?**
+st.header("B. Which are the most common matches outcomes? What are the most played type of matches?")
 
-***MOST COMMON MATCHES OUTCOMES***
-"""
+"""***MOST COMMON MATCHES OUTCOMES***"""
 
 endgame_reason_df = chess_df['victory_status'].value_counts()
 
