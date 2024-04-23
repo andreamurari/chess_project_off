@@ -18,8 +18,10 @@ import streamlit as st
 
 st.title('**Chess Project**')
 
-#DATA-SET PRESENTATIOON CHAPTER 
+
+#DSECTION A
 st.header('A. Data-set presentation')
+
 #GENERAL INFO SUBSECTION
 st.subheader('General informations')
 """
@@ -61,6 +63,7 @@ if st.button('SHOW SUMMARY OF STATISTICAL PROPERTIES'):
         st.button('SHOW SUMMARY OF STATISTICAL PROPERTIES') == False   
     st.write(chess_df.describe())
 
+
 #DATA HANDLING SUBSECTION
 st.subheader('Data handling')
 
@@ -72,15 +75,15 @@ chess_df_backup = chess_df.copy() #BACKUP OF ORIGINAL DS
 """
 #DROOPING UNNECESSARY COLUMNS AND ADDED NEW ONES 
 chess_df.drop(['moves', 'white_id', 'black_id', 'id', 'created_at', 'last_move_at', 'rated'], axis=1, inplace = True )
-
 chess_df['white_win'] = ( chess_df['winner'] == 'white' ) * 1
-
 chess_df['black_win'] = ( chess_df['winner'] == 'black' ) * 1
 
 "Now the data-set looks like this: "
 
-#BUTTON FOR UPDATED DS
+#SHOWING UPDATED DS
 chess_df
+
+
 #CORRELATION SUBSECTION
 st.subheader('General correlation')    
 
@@ -99,47 +102,48 @@ st.pyplot(fig_corr)
 * **white_rating and black_rating:** positive correlation, this is because matchmaking software matches opponents with similar ratings.
 * **white_win and black_win:** negative correlation, obviously because if one player win, then the other loose. The correlation is not -1 because there can be some draws."""
 
+
+#SECTION B
 st.header("B. Which are the most common matches outcomes? What are the most played type of matches?")
 
-"""***MOST COMMON MATCHES OUTCOMES***"""
+#OUTCOMES SUBSECTION
+st.subheader("Most common matches outcomes")
 
 endgame_reason_df = chess_df['victory_status'].value_counts()
 
-plt.figure(figsize=(6,6))
+#PLOTTING ENDGAME REASON PIE CHART
+fig_outcomes, ax = plt.subplots(figsize=(6,6))
 plt.pie(endgame_reason_df, labels = endgame_reason_df.index, autopct = '%i%%')
-plt.title('DISTRIBUTION OF ENDGAME REASON ')
+plt.title('DISTRIBUTION OF ENDGAME REASON ', fontdict={'fontsize':'10'})
+st.pyplot(fig_outcomes)
 
-plt.show()
+"""It's easy to see that the most endgame reason is "resign" followed by "checkmate" while "draw" and "out of time" are widely less frequent."""
 
-"""It's easy to see that the most endgame reason is "resign" followed by "checkmate". "Draws" and "out of time" are widely less frequent.
+#TYPE OF MATCHES SUBSECTION
+st.subheader("Most played type of matches")
 
-***MOST PLAYED TYPE OF MATCHES***
-
-First, it's generated a boolean mask to exclude the least played match types ( <  2% of the total 20.000+ matches)
-"""
+"""It's generated a data frame of the most played type of matches. 
+The type of matches played less than 2% (of the total 20.000+ matches) are grouped with index 'other'."""
 
 most_played_mask = chess_df['increment_code'].value_counts() > chess_df['increment_code'].value_counts().sum() * 0.02
-
-"""Then it's created a data frame of the most played type of matches so it can be plotted in a pie-chart. This DF groups match types played less than 2% of the total at the 'other' index."""
-
 most_played_df = chess_df['increment_code'].value_counts()[most_played_mask]
-
 other = chess_df['increment_code'].value_counts().sum()- most_played_df.sum()
 other_dict={'other':other}
 other_series = pd.Series(other_dict)
-
 all_type_df = most_played_df._append(other_series, ignore_index= False)
 
-plt.figure(figsize = (7,7))
+#PLOTTING MOST PLAYED TYPE OF MATCHES
+fig_most_played, ax = plt.subplots(figsize = (6,6))
 explode = (0.04, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 plt.pie(all_type_df, labels = all_type_df.index, explode = explode, autopct = '%i%%')
-plt.title('Most played type of matches', fontdict={'fontsize':'20'})
+plt.title('Most played type of matches', fontdict={'fontsize':'10'})
+st.pyplot(fig_most_played)
 
-plt.show()
+"""It's higlited that the most frequently played match types are the 10+0. All other types are definitely less played."""
 
-"""It's higlited that the most frequently played match types are the 10+0. All other types are definitely less played.
 
-## **C) Is there some correlation between starting with white pieces and the outcome of the match?**
+#SECTION C
+"""## **C) Is there some correlation between starting with white pieces and the outcome of the match?**
 
 This question can be answered plotting a bar-chart of the distribution of matches outcomes.
 """
