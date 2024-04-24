@@ -149,6 +149,7 @@ with st.expander("Which player wins more matches?"):
     plt.title('Distribution of matches outcomes', fontdict={'fontsize':'10'})
     
     col_1, col_2 = st.columns(2) 
+    
     with col_1:
         #CHECKBOX FOR WINNER DISTRIBUTION CHART
         if st.checkbox('SHOW CHART OF DISTRIBUTION OF WINNING PLAYER'):
@@ -161,9 +162,7 @@ with st.expander("Which player wins more matches?"):
     
     difference = chess_df['winner'].value_counts()['white']-chess_df['winner'].value_counts()['black']
     difference_pct = int((chess_df['winner'].value_counts('pct')['white']-chess_df['winner'].value_counts('pct')['black'])*100)
-
-
-
+    
 
 with st.expander('How the situation changes when matches became longer in terms of number of turns?'):
     """
@@ -181,19 +180,31 @@ with st.expander('How the situation changes when matches became longer in terms 
     ftm_winner_df = few_turns_matches_df['winner'].value_counts()
 
     """***MANY-TURNS MATCHES***"""
-
-    mtm_winner_df
+    
+    """It can be noticed that the percentage of white winning in many-turns matches (1%) is decreased compared to the original data set matches (4%)."""
+    
+    fig_ocmt, ax = plt.subplots(figsize=(6,4))
+    plt.bar(mtm_winner_df.index, mtm_winner_df, color = ('skyblue', 'pink', 'red'), edgecolor = 'black')
+    plt.title('Distribution of many-turns matches outcomes', fontdict={'fontsize':'10'})
+    
+    col_3, col_4 = st.columns(2) 
+    
+    with col_3:
+        #CHECKBOX FOR WINNER DISTRIBUTION CHART
+        if st.checkbox('SHOW CHART WITH MANY TURNS'):
+            st.pyplot(fig_ocmt)
+    
+    with col_4:
+        ##CHECKBOX FOR WINNER DISTRIBUTION DF
+        if st.checkbox('SHOW DF WITH MANY TURNS'):
+            mtm_winner_df
+    
 
     difference =mtm_winner_df['white']-mtm_winner_df['black']
-    difference
-
     difference_pct = round((many_turns_matches_df['winner'].value_counts('pct')['white']-many_turns_matches_df['winner'].value_counts('pct')['black'])*100)
-    print(difference_pct, '%')
 
-    """It can be noticed that the percentage of white winning in many-turns matches, is decreased compared to the original data set matches.
 
-    ***FEW-TURNS MATCHES***
-    """
+    """***FEW-TURNS MATCHES***"""
 
     difference = ftm_winner_df['white']-ftm_winner_df['black']
     difference
