@@ -62,9 +62,9 @@ with st.expander('Data handling'):
 
     chess_df_backup = chess_df.copy() #BACKUP OF ORIGINAL DS
 
-    """All the columns that will not be used are dropped and two new columns are added:
-    * "white_win" : equals 1 if winner it's white player, 0 otherwise;
-    * "black_win" : equals 1 if winner it's black player, 0 otherwise.
+    """All the columns that will not be used are dropped and two new columns are added:"""
+    """* "white_win" : equals 1 if winner it's white player, 0 otherwise;"""
+    """* "black_win" : equals 1 if winner it's black player, 0 otherwise.
     """
     #DROOPING UNNECESSARY COLUMNS AND ADDED NEW ONES 
     chess_df.drop(['moves', 'white_id', 'black_id', 'id', 'created_at', 'last_move_at', 'rated'], axis=1, inplace = True )
@@ -90,10 +90,10 @@ with st.expander('General correlation'):
     sb.heatmap(chess_corr, annot=True)  
     st.pyplot(fig_corr)
 
-    """As a first impression, the only parameters that seems to have a little correlation are:
+    """As a first impression, the only parameters that seems to have a little correlation are:"""
 
-    * **white_rating and black_rating:** positive correlation, this is because matchmaking software matches opponents with similar ratings.
-    * **white_win and black_win:** negative correlation, obviously because if one player win, then the other loose. The correlation is not -1 because there can be some draws."""
+    """-    __white_rating and black_rating:__ positive correlation, this is because matchmaking software matches opponents with similar ratings."""
+    """-   __white_win and black_win:__ negative correlation, obviously because if one player win, then the other loose. The correlation is not -1 because there can be some draws."""
 
 
 #SECTION B
@@ -136,29 +136,28 @@ with st.expander("Most played type of matches"):
 
 
 #SECTION C
-"""## **C) Is there some correlation between starting with white pieces and the outcome of the match?**
+st.subheader("C. Is there some correlation between starting with white pieces and the outcome of the match?")
 
-This question can be answered plotting a bar-chart of the distribution of matches outcomes.
+with st.expander("Which player wins more matches?"):
+    """As we can see in the following bar chart, white players have few more wins than black ones but the difference is very small: only 894 matches (4%)."""
+
+    winner_df = chess_df['winner'].value_counts()
+
+    #CREATING WINNER DISTRIBUTION FIGURE
+    fig_oc, ax = plt.subplots(figsize=(6,4))
+    plt.bar(winner_df.index, winner_df, color = ('skyblue', 'pink', 'red'), edgecolor = 'black')
+    plt.title('Distribution of matches outcomes', fontdict={'fontsize':'10'})
+    
+    #BUTTON FOR WINNER DISTRIBUTION
+    if st.button('SHOW DISTRIBUTION OF WINNING PLAYER'):
+        if st.button('HIDE DISTRIBUTION OF WINNING PLAYER'):
+            st.button('SHOW DISTRIBUTION OF WINNING PLAYER') == False   
+        st.pyplot(fig_oc)
+    difference = chess_df['winner'].value_counts()['white']-chess_df['winner'].value_counts()['black']
+    difference_pct = int((chess_df['winner'].value_counts('pct')['white']-chess_df['winner'].value_counts('pct')['black'])*100)
+
+
 """
-
-winner_df = chess_df['winner'].value_counts()
-winner_df
-
-plt.figure(figsize=(6,4))
-plt.bar(winner_df.index, winner_df, color = ('skyblue', 'pink', 'red'), edgecolor = 'black')
-plt.title('Distribution of matches outcomes')
-
-plt.show()
-
-"""As we can see, white players have few more wins than black ones but the difference is very small:"""
-
-difference = chess_df['winner'].value_counts()['white']-chess_df['winner'].value_counts()['black']
-difference
-
-difference_pct = int((chess_df['winner'].value_counts('pct')['white']-chess_df['winner'].value_counts('pct')['black'])*100)
-print(difference_pct, '%')
-
-"""only 894 matches (4%).
 
 ## **C.1) How the situation changes when matches became longer in terms of number of turns?**
 
