@@ -18,128 +18,121 @@ import streamlit as st
 
 st.title('**Chess Project**')
 
-
-#DSECTION A
-st.header('A. Data-set presentation')
+#SECTION A
+st.subheader('A. Data-set presentation')
 
 #GENERAL INFO SUBSECTION
-st.subheader('General informations')
-"""
-This data-set groups data from more than 20,000 games collected from a selection of users on the site Lichess.org. This set contains:
-*  Game ID;
-*  Rated (Boolean value);
-*  Start Time;
-*  End Time;
-*  Number of Turns;
-*  Game Status;
-*  Winner;
-*  Time Increment;
-*  White Player ID;
-*  White Player Rating;
-*  Black Player ID;
-*  Black Player Rating;
-*  All Moves in Standard Chess Notation;
-*  Opening Eco (Standardised Code for any given opening, list here);
-*  Opening Name;
-*  Opening Ply (Number of moves in the opening phase);
-"""
-chess_df = pd.read_csv(r'C:\Users\murar\Desktop\chess_project\chess.csv')
+with st.expander('General informations'):
+    """
+    This data-set groups data from more than 20,000 games collected from a selection of users on the site Lichess.org. This set contains:
+    *  Game ID;
+    *  Rated (Boolean value);
+    *  Start Time;
+    *  End Time;
+    *  Number of Turns;
+    *  Game Status;
+    *  Winner;
+    *  Time Increment;
+    *  White Player ID;
+    *  White Player Rating;
+    *  Black Player ID;
+    *  Black Player Rating;
+    *  All Moves in Standard Chess Notation;
+    *  Opening Eco (Standardised Code for any given opening, list here);
+    *  Opening Name;
+    *  Opening Ply (Number of moves in the opening phase);
+    """
+    chess_df = pd.read_csv(r'C:\Users\murar\Desktop\chess_project\chess.csv')
 
-#BUTTON FOR ORIGINAL DS
-if st.button('SHOW DATASET'):
-    if st.button('HIDE DATASET'):
-        st.button('SHOW DATASET') == False    
-    chess_df    
-
-#BUTTON FOR CHESS_DF.INFO()
-if st.button('SHOW OF DATASET INFO'):
-    if st.button('HIDE DATASET INFO'):
-        st.button('SHOW DATASET INFO') == False    
-    st.pyplot(chess_df.info()) #non funziona: correggere il metodo di stampa!!!!!!
+    #BUTTON FOR ORIGINAL DS
+    if st.button('SHOW DATASET'):
+        if st.button('HIDE DATASET'):
+            st.button('SHOW DATASET') == False    
+        chess_df    
     
-#BUTTON FOR CHESS_DF.DESCRIBE()
-if st.button('SHOW SUMMARY OF STATISTICAL PROPERTIES'):
-    if st.button('HIDE SUMMARY OF STATISTICAL PROPERTIES'):
-        st.button('SHOW SUMMARY OF STATISTICAL PROPERTIES') == False   
-    st.write(chess_df.describe())
+    #BUTTON FOR CHESS_DF.DESCRIBE()
+    if st.button('SHOW SUMMARY OF STATISTICAL PROPERTIES'):
+        if st.button('HIDE SUMMARY OF STATISTICAL PROPERTIES'):
+            st.button('SHOW SUMMARY OF STATISTICAL PROPERTIES') == False   
+        st.write(chess_df.describe())
 
 
 #DATA HANDLING SUBSECTION
-st.subheader('Data handling')
+with st.expander('Data handling'):
 
-chess_df_backup = chess_df.copy() #BACKUP OF ORIGINAL DS
+    chess_df_backup = chess_df.copy() #BACKUP OF ORIGINAL DS
 
-"""All the columns that will not be used are dropped and two new columns are added:
-* "white_win" : equals 1 if winner it's white player, 0 otherwise;
-* "black_win" : equals 1 if winner it's black player, 0 otherwise.
-"""
-#DROOPING UNNECESSARY COLUMNS AND ADDED NEW ONES 
-chess_df.drop(['moves', 'white_id', 'black_id', 'id', 'created_at', 'last_move_at', 'rated'], axis=1, inplace = True )
-chess_df['white_win'] = ( chess_df['winner'] == 'white' ) * 1
-chess_df['black_win'] = ( chess_df['winner'] == 'black' ) * 1
+    """All the columns that will not be used are dropped and two new columns are added:
+    * "white_win" : equals 1 if winner it's white player, 0 otherwise;
+    * "black_win" : equals 1 if winner it's black player, 0 otherwise.
+    """
+    #DROOPING UNNECESSARY COLUMNS AND ADDED NEW ONES 
+    chess_df.drop(['moves', 'white_id', 'black_id', 'id', 'created_at', 'last_move_at', 'rated'], axis=1, inplace = True )
+    chess_df['white_win'] = ( chess_df['winner'] == 'white' ) * 1
+    chess_df['black_win'] = ( chess_df['winner'] == 'black' ) * 1
 
-"Now the data-set looks like this: "
+    "Now the data-set looks like this: "
 
-#SHOWING UPDATED DS
-chess_df
+    #SHOWING UPDATED DS
+    chess_df
 
 
 #CORRELATION SUBSECTION
-st.subheader('General correlation')    
+with st.expander('General correlation'):    
 
-"""Here you can see the correlation graphs of the numerical variables in the data set:"""
+    """Here you can see the correlation graphs of the numerical variables in the data set:"""
 
-chess_corr_df = chess_df.drop(['victory_status', 'winner', 'increment_code', 'opening_eco', 'opening_name'], axis=1, inplace = False )
-chess_corr = chess_corr_df.corr()
+    chess_corr_df = chess_df.drop(['victory_status', 'winner', 'increment_code', 'opening_eco', 'opening_name'], axis=1, inplace = False )
+    chess_corr = chess_corr_df.corr()
 
-#PLOTTING CORRELATION GRAPH
-fig_corr, ax = plt.subplots(figsize=(8, 6))  
-sb.heatmap(chess_corr, annot=True)  
-st.pyplot(fig_corr)
+    #PLOTTING CORRELATION GRAPH
+    fig_corr, ax = plt.subplots(figsize=(8, 6))  
+    sb.heatmap(chess_corr, annot=True)  
+    st.pyplot(fig_corr)
 
-"""As a first impression, the only parameters that seems to have a little correlation are:
+    """As a first impression, the only parameters that seems to have a little correlation are:
 
-* **white_rating and black_rating:** positive correlation, this is because matchmaking software matches opponents with similar ratings.
-* **white_win and black_win:** negative correlation, obviously because if one player win, then the other loose. The correlation is not -1 because there can be some draws."""
+    * **white_rating and black_rating:** positive correlation, this is because matchmaking software matches opponents with similar ratings.
+    * **white_win and black_win:** negative correlation, obviously because if one player win, then the other loose. The correlation is not -1 because there can be some draws."""
 
 
 #SECTION B
-st.header("B. Which are the most common matches outcomes? What are the most played type of matches?")
+st.subheader("B. Which are the most common matches outcomes? What are the most played type of matches?")
 
 #OUTCOMES SUBSECTION
-st.subheader("Most common matches outcomes")
+with st.expander("Most common matches outcomes"):
 
-endgame_reason_df = chess_df['victory_status'].value_counts()
+    endgame_reason_df = chess_df['victory_status'].value_counts()
 
-#PLOTTING ENDGAME REASON PIE CHART
-fig_outcomes, ax = plt.subplots(figsize=(6,6))
-plt.pie(endgame_reason_df, labels = endgame_reason_df.index, autopct = '%i%%')
-plt.title('DISTRIBUTION OF ENDGAME REASON ', fontdict={'fontsize':'10'})
-st.pyplot(fig_outcomes)
+    #PLOTTING ENDGAME REASON PIE CHART
+    fig_outcomes, ax = plt.subplots(figsize=(6,6))
+    plt.pie(endgame_reason_df, labels = endgame_reason_df.index, autopct = '%i%%')
+    plt.title('DISTRIBUTION OF ENDGAME REASON ', fontdict={'fontsize':'10'})
+    st.pyplot(fig_outcomes)
 
-"""It's easy to see that the most endgame reason is "resign" followed by "checkmate" while "draw" and "out of time" are widely less frequent."""
+    """It's easy to see that the most endgame reason is "resign" followed by "checkmate" while "draw" and "out of time" are widely less frequent."""
 
 #TYPE OF MATCHES SUBSECTION
-st.subheader("Most played type of matches")
+with st.expander("Most played type of matches"):
 
-"""It's generated a data frame of the most played type of matches. 
-The type of matches played less than 2% (of the total 20.000+ matches) are grouped with index 'other'."""
+    """It's generated a data frame of the most played type of matches. 
+    The type of matches played less than 2% (of the total 20.000+ matches) are grouped with index 'other'."""
 
-most_played_mask = chess_df['increment_code'].value_counts() > chess_df['increment_code'].value_counts().sum() * 0.02
-most_played_df = chess_df['increment_code'].value_counts()[most_played_mask]
-other = chess_df['increment_code'].value_counts().sum()- most_played_df.sum()
-other_dict={'other':other}
-other_series = pd.Series(other_dict)
-all_type_df = most_played_df._append(other_series, ignore_index= False)
+    most_played_mask = chess_df['increment_code'].value_counts() > chess_df['increment_code'].value_counts().sum() * 0.02
+    most_played_df = chess_df['increment_code'].value_counts()[most_played_mask]
+    other = chess_df['increment_code'].value_counts().sum()- most_played_df.sum()
+    other_dict={'other':other}
+    other_series = pd.Series(other_dict)
+    all_type_df = most_played_df._append(other_series, ignore_index= False)
 
-#PLOTTING MOST PLAYED TYPE OF MATCHES
-fig_most_played, ax = plt.subplots(figsize = (6,6))
-explode = (0.04, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-plt.pie(all_type_df, labels = all_type_df.index, explode = explode, autopct = '%i%%')
-plt.title('Most played type of matches', fontdict={'fontsize':'10'})
-st.pyplot(fig_most_played)
+    #PLOTTING MOST PLAYED TYPE OF MATCHES
+    fig_most_played, ax = plt.subplots(figsize = (6,6))
+    explode = (0.04, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    plt.pie(all_type_df, labels = all_type_df.index, explode = explode, autopct = '%i%%')
+    plt.title('Most played type of matches', fontdict={'fontsize':'10'})
+    st.pyplot(fig_most_played)
 
-"""It's higlited that the most frequently played match types are the 10+0. All other types are definitely less played."""
+    """It's higlited that the most frequently played match types are the 10+0. All other types are definitely less played."""
 
 
 #SECTION C
