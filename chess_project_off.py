@@ -139,7 +139,7 @@ with st.expander("Most played type of matches"):
 st.subheader("C. Is there some correlation between starting with white pieces and the outcome of the match?")
 
 with st.expander("Which player wins more matches?"):
-    """As we can see in the following bar chart, white players have few more wins than black ones but the difference is very small: only 894 matches (4%)."""
+    """As we can see in the following bar chart, white players have few more wins (10.001) than black ones (9.107) but the difference is very small: only 894 matches (4%)."""
 
     winner_df = chess_df['winner'].value_counts()
 
@@ -148,187 +148,194 @@ with st.expander("Which player wins more matches?"):
     plt.bar(winner_df.index, winner_df, color = ('skyblue', 'pink', 'red'), edgecolor = 'black')
     plt.title('Distribution of matches outcomes', fontdict={'fontsize':'10'})
     
-    #BUTTON FOR WINNER DISTRIBUTION
-    if st.button('SHOW DISTRIBUTION OF WINNING PLAYER'):
-        if st.button('HIDE DISTRIBUTION OF WINNING PLAYER'):
-            st.button('SHOW DISTRIBUTION OF WINNING PLAYER') == False   
-        st.pyplot(fig_oc)
+    col_1, col_2 = st.columns(2) 
+    with col_1:
+        #CHECKBOX FOR WINNER DISTRIBUTION CHART
+        if st.checkbox('SHOW CHART OF DISTRIBUTION OF WINNING PLAYER'):
+            st.pyplot(fig_oc)
+    
+    with col_2:
+        ##CHECKBOX FOR WINNER DISTRIBUTION DF
+        if st.checkbox('SHOW DF OF DISTRIBUTION OF WINNING PLAYER'):
+            winner_df
+    
     difference = chess_df['winner'].value_counts()['white']-chess_df['winner'].value_counts()['black']
     difference_pct = int((chess_df['winner'].value_counts('pct')['white']-chess_df['winner'].value_counts('pct')['black'])*100)
 
 
-"""
-
-## **C.1) How the situation changes when matches became longer in terms of number of turns?**
-
-Now it will be analyzed if the difference get bigger o smaller when matches have higher and lower number of turns. Matches with 79 (75% of turns distribution) or more  turns will be considered many-turns matches and matches with 37 (25% of turns distribution) or less turns will be considered few-turns matches. The first step is to generate the two DF.
-"""
-
-many_turns_matches_mask = chess_df ['turns'] >= 79
-many_turns_matches_df = chess_df[many_turns_matches_mask]
-mtm_winner_df = many_turns_matches_df['winner'].value_counts()
-
-few_turns_matches_mask = chess_df ['turns'] <= 37
-few_turns_matches_df = chess_df[few_turns_matches_mask]
-ftm_winner_df = few_turns_matches_df['winner'].value_counts()
-
-"""***MANY-TURNS MATCHES***"""
-
-mtm_winner_df
-
-difference =mtm_winner_df['white']-mtm_winner_df['black']
-difference
-
-difference_pct = round((many_turns_matches_df['winner'].value_counts('pct')['white']-many_turns_matches_df['winner'].value_counts('pct')['black'])*100)
-print(difference_pct, '%')
-
-"""It can be noticed that the percentage of white winning in many-turns matches, is decreased compared to the original data set matches.
-
-***FEW-TURNS MATCHES***
-"""
-
-difference = ftm_winner_df['white']-ftm_winner_df['black']
-difference
-
-difference_pct = round((few_turns_matches_df['winner'].value_counts('pct')['white']-few_turns_matches_df['winner'].value_counts('pct')['black'])*100)
-print(difference_pct, '%')
-
-"""By contrast, the percentage of white winning in the few-turns matches DF is increased.
-
-***PLOTS***
-"""
-
-fig_1 = plt.figure(figsize=(10,15))
-ax_1 = fig_1.add_subplot(3, 2, 1)
-ax_2 = fig_1.add_subplot(3, 2, 2)
-ax_3 = fig_1.add_subplot(3, 2, 3)
-ax_4 = fig_1.add_subplot(3, 2, 4)
-ax_5 = fig_1.add_subplot(3, 2, 5)
-ax_6 = fig_1.add_subplot(3, 2, 6)
-
-ax_1.bar(winner_df.index, winner_df, color = ('skyblue', 'pink', 'red'), edgecolor = 'black')
-ax_1.set_title('Distribution of matches outcomes')
-
-ax_2.pie(winner_df, labels = winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
-ax_2.set_title('Pie-chart of matches outcomes')
-
-ax_3.bar(ftm_winner_df.index, ftm_winner_df, color = ('skyblue', 'pink', 'red'), edgecolor = 'black')
-ax_3.set_title('Distribution of few-turns matches outcomes')
-
-ax_4.pie(ftm_winner_df, labels = ftm_winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
-ax_4.set_title('Pie-chart of few-turns matches outcomes')
-
-ax_5.bar(mtm_winner_df.index, mtm_winner_df, color = ('skyblue', 'pink', 'red'), edgecolor = 'black')
-ax_5.set_title('Distribution of many-turns matches outcomes')
-
-ax_6.pie(mtm_winner_df, labels = mtm_winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
-ax_6.set_title('Pie-chart of many-turns matches outcomes')
-
-plt.show()
-
-"""From this figure, can also be noticed that the percentage of draws increas in many-turns matches.
-
-## **C.2) Regression model for C.1  question**
-"""
-
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn import metrics
-from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix
-
-"""Two new DFs are generated: these ones collect the victory percentage of the black and white player depending on the value of variable "turns"."""
-
-white_win_mask = chess_df['winner'] == 'white'
-white_win_df = chess_df[white_win_mask]
-black_win_mask = chess_df['winner'] == 'black'
-black_win_df = chess_df[black_win_mask]
-
-ww_turns_pct = white_win_df['turns'].value_counts() / chess_df['turns'].value_counts()
-bw_turns_pct = black_win_df['turns'].value_counts() / chess_df['turns'].value_counts()
-
-"""These two DFs are plotted:
-
-*   Blue pallets reports white players win
-*   Pink pallets reports black players win
 
 
+with st.expander('How the situation changes when matches became longer in terms of number of turns?'):
+    """
+    Here will be analyzed if the difference get bigger o smaller when matches have higher and lower number of turns. 
+    Matches with 79 or more turns (75% of turns distribution) will be considered many-turns matches and matches with 37 
+    or less turns (25% of turns distribution) will be considered few-turns matches.
+    """
 
-"""
+    many_turns_matches_mask = chess_df ['turns'] >= 79
+    many_turns_matches_df = chess_df[many_turns_matches_mask]
+    mtm_winner_df = many_turns_matches_df['winner'].value_counts()
 
-plt.figure(figsize = (8,4))
-plt.scatter(ww_turns_pct.index, ww_turns_pct, c = 'skyblue')
-plt.title('Distribution of white winning percentage related to number of turns')
+    few_turns_matches_mask = chess_df ['turns'] <= 37
+    few_turns_matches_df = chess_df[few_turns_matches_mask]
+    ftm_winner_df = few_turns_matches_df['winner'].value_counts()
 
-plt.show()
+    """***MANY-TURNS MATCHES***"""
 
-plt.figure(figsize = (8,4))
-plt.scatter(bw_turns_pct.index, bw_turns_pct, c = 'pink')
-plt.title('Distribution of black winning percentage related to number of turns')
+    mtm_winner_df
 
-plt.show()
+    difference =mtm_winner_df['white']-mtm_winner_df['black']
+    difference
 
-plt.figure(figsize = (8,4))
-plt.scatter(ww_turns_pct.index, ww_turns_pct, c = 'skyblue')
-plt.scatter(bw_turns_pct.index, bw_turns_pct, c = 'pink')
-plt.title('Combination of the two previous graphs ')
+    difference_pct = round((many_turns_matches_df['winner'].value_counts('pct')['white']-many_turns_matches_df['winner'].value_counts('pct')['black'])*100)
+    print(difference_pct, '%')
 
-plt.show()
+    """It can be noticed that the percentage of white winning in many-turns matches, is decreased compared to the original data set matches.
 
-"""These graphs show that there is no definite pattern, but it can be noticed that there are many values at the extremes, this is because white usually win in an odd-numbered round, while black in an even-numbered round.
+    ***FEW-TURNS MATCHES***
+    """
 
-For this reason is much interesting studing the distribution of draws:
+    difference = ftm_winner_df['white']-ftm_winner_df['black']
+    difference
 
-Now will be introduced two new columns in the data set:
+    difference_pct = round((few_turns_matches_df['winner'].value_counts('pct')['white']-few_turns_matches_df['winner'].value_counts('pct')['black'])*100)
+    print(difference_pct, '%')
 
-*   "draws": boolean value that is worth 1 if the match is a tie and 0 if it is not;
-*   "rating_diff" : indicates the rating difference between the two players in absolute value;  
+    """By contrast, the percentage of white winning in the few-turns matches DF is increased.
 
-It's also generated a new DF, draw_turns_pct, that collects the percentage of draws per number of turns
-"""
+    ***PLOTS***
+    """
 
-draw_mask = chess_df['winner'] == 'draw'
-draw_df = chess_df[draw_mask]
+    fig_1 = plt.figure(figsize=(10,15))
+    ax_1 = fig_1.add_subplot(3, 2, 1)
+    ax_2 = fig_1.add_subplot(3, 2, 2)
+    ax_3 = fig_1.add_subplot(3, 2, 3)
+    ax_4 = fig_1.add_subplot(3, 2, 4)
+    ax_5 = fig_1.add_subplot(3, 2, 5)
+    ax_6 = fig_1.add_subplot(3, 2, 6)
 
-chess_df ['draw'] = draw_mask * 1
-chess_df ['rating_diff'] = abs (chess_df['white_rating'] - chess_df ['black_rating'])
+    ax_1.bar(winner_df.index, winner_df, color = ('skyblue', 'pink', 'red'), edgecolor = 'black')
+    ax_1.set_title('Distribution of matches outcomes')
 
-draw_turns_pct = draw_df['turns'].value_counts() / chess_df['turns'].value_counts()
+    ax_2.pie(winner_df, labels = winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
+    ax_2.set_title('Pie-chart of matches outcomes')
 
-plt.figure(figsize = (10,4))
-plt.scatter(draw_turns_pct.index, draw_turns_pct, c = 'red')
-plt.title('Distribution of draws percentage related to number of turns ')
-plt.show()
+    ax_3.bar(ftm_winner_df.index, ftm_winner_df, color = ('skyblue', 'pink', 'red'), edgecolor = 'black')
+    ax_3.set_title('Distribution of few-turns matches outcomes')
 
-"""It seems to be an exponential distribution:
-yp = f(xp) is an exponential function defined as follows:
-"""
+    ax_4.pie(ftm_winner_df, labels = ftm_winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
+    ax_4.set_title('Pie-chart of few-turns matches outcomes')
 
-kp = np.log(2) / 250
-xp = np.linspace(0, 250, 10000)
-yp = 0.2 * np.exp(0.0075 * xp) - 0.2
+    ax_5.bar(mtm_winner_df.index, mtm_winner_df, color = ('skyblue', 'pink', 'red'), edgecolor = 'black')
+    ax_5.set_title('Distribution of many-turns matches outcomes')
 
-plt.figure(figsize = (10,4))
-plt.scatter(draw_turns_pct.index, draw_turns_pct, c = 'red')
-plt.plot(xp, yp)
-plt.xlim(0, 260)
-plt.ylim(-0.1, 1.1)
-plt.title('Distribution of draws percentage related to number of turns ')
+    ax_6.pie(mtm_winner_df, labels = mtm_winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
+    ax_6.set_title('Pie-chart of many-turns matches outcomes')
 
-plt.show()
+    plt.show()
 
-"""Now it's generated a logit model that study the influention of number of turns and rating difference between the two players on the probability of a draw."""
+    """From this figure, can also be noticed that the percentage of draws increas in many-turns matches."""
 
-variables = ['turns', 'rating_diff']
-x = chess_df[variables]
-y = chess_df['draw']
+with st.expander ('Regression model for C.1  question'):
 
-x_train_chess_df, x_test_chess_df, y_train_chess_df, y_test_chess_df = train_test_split(x, y, test_size = 0.5, random_state = 5)
+    from sklearn.model_selection import train_test_split
+    from sklearn.linear_model import LogisticRegression
+    from sklearn import metrics
+    from sklearn.metrics import classification_report
+    from sklearn.metrics import confusion_matrix
 
-model = sm.MNLogit(y_train_chess_df, sm.add_constant(x_train_chess_df))
-result = model.fit()
-stats = result.summary()
-print(stats)
+    """Two new DFs are generated: these ones collect the victory percentage of the black and white player depending on the value of variable "turns"."""
+
+    white_win_mask = chess_df['winner'] == 'white'
+    white_win_df = chess_df[white_win_mask]
+    black_win_mask = chess_df['winner'] == 'black'
+    black_win_df = chess_df[black_win_mask]
+
+    ww_turns_pct = white_win_df['turns'].value_counts() / chess_df['turns'].value_counts()
+    bw_turns_pct = black_win_df['turns'].value_counts() / chess_df['turns'].value_counts()
+
+    """These two DFs are plotted:
+
+    *   Blue pallets reports white players win
+    *   Pink pallets reports black players win
+
+
+
+    """
+
+    plt.figure(figsize = (8,4))
+    plt.scatter(ww_turns_pct.index, ww_turns_pct, c = 'skyblue')
+    plt.title('Distribution of white winning percentage related to number of turns')
+
+    plt.show()
+
+    plt.figure(figsize = (8,4))
+    plt.scatter(bw_turns_pct.index, bw_turns_pct, c = 'pink')
+    plt.title('Distribution of black winning percentage related to number of turns')
+
+    plt.show()
+
+    plt.figure(figsize = (8,4))
+    plt.scatter(ww_turns_pct.index, ww_turns_pct, c = 'skyblue')
+    plt.scatter(bw_turns_pct.index, bw_turns_pct, c = 'pink')
+    plt.title('Combination of the two previous graphs ')
+
+    plt.show()
+
+    """These graphs show that there is no definite pattern, but it can be noticed that there are many values at the extremes, this is because white usually win in an odd-numbered round, while black in an even-numbered round.
+
+    For this reason is much interesting studing the distribution of draws:
+
+    Now will be introduced two new columns in the data set:
+
+    *   "draws": boolean value that is worth 1 if the match is a tie and 0 if it is not;
+    *   "rating_diff" : indicates the rating difference between the two players in absolute value;  
+
+    It's also generated a new DF, draw_turns_pct, that collects the percentage of draws per number of turns
+    """
+
+    draw_mask = chess_df['winner'] == 'draw'
+    draw_df = chess_df[draw_mask]
+
+    chess_df ['draw'] = draw_mask * 1
+    chess_df ['rating_diff'] = abs (chess_df['white_rating'] - chess_df ['black_rating'])
+
+    draw_turns_pct = draw_df['turns'].value_counts() / chess_df['turns'].value_counts()
+
+    plt.figure(figsize = (10,4))
+    plt.scatter(draw_turns_pct.index, draw_turns_pct, c = 'red')
+    plt.title('Distribution of draws percentage related to number of turns ')
+    plt.show()
+
+    """It seems to be an exponential distribution:
+    yp = f(xp) is an exponential function defined as follows:
+    """
+
+    kp = np.log(2) / 250
+    xp = np.linspace(0, 250, 10000)
+    yp = 0.2 * np.exp(0.0075 * xp) - 0.2
+
+    plt.figure(figsize = (10,4))
+    plt.scatter(draw_turns_pct.index, draw_turns_pct, c = 'red')
+    plt.plot(xp, yp)
+    plt.xlim(0, 260)
+    plt.ylim(-0.1, 1.1)
+    plt.title('Distribution of draws percentage related to number of turns ')
+
+    plt.show()
+
+    """Now it's generated a logit model that study the influention of number of turns and rating difference between the two players on the probability of a draw."""
+
+    variables = ['turns', 'rating_diff']
+    x = chess_df[variables]
+    y = chess_df['draw']
+
+    x_train_chess_df, x_test_chess_df, y_train_chess_df, y_test_chess_df = train_test_split(x, y, test_size = 0.5, random_state = 5)
+
+    model = sm.MNLogit(y_train_chess_df, sm.add_constant(x_train_chess_df))
+    result = model.fit()
+    stats = result.summary()
+    print(stats)
 
 """## **D) What are the best opening moves for white player? And for black one?**
 
