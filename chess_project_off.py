@@ -318,15 +318,14 @@ with st.expander ('Regression model'):
 
     """These graphs show that there is no definite pattern, but it can be noticed that there are many values at the extremes, this is because white usually win in an odd-numbered round, while black in an even-numbered round."""
 
-    """For this reason is much interesting studing the distribution of draws:
+    """For this reason is much interesting studing the ***distribution of draws***. 
+    Two new columns are introduced in the data set:"""
 
-    Now will be introduced two new columns in the data set:
+    """*   "draws": boolean value that is worth 1 if the match is a tie and 0 if it is not;"""
+    """*   "rating_diff" : indicates the rating difference between the two players in absolute value;"""  
 
-    *   "draws": boolean value that is worth 1 if the match is a tie and 0 if it is not;
-    *   "rating_diff" : indicates the rating difference between the two players in absolute value;  
-
-    It's also generated a new DF, draw_turns_pct, that collects the percentage of draws per number of turns
-    """
+    """It's also generated a new DF ("draw_turns_pct") that collects the percentage of draws per number of turns. 
+    The scatter plot of this new DF looks as follows: """
 
     draw_mask = chess_df['winner'] == 'draw'
     draw_df = chess_df[draw_mask]
@@ -336,29 +335,39 @@ with st.expander ('Regression model'):
 
     draw_turns_pct = draw_df['turns'].value_counts() / chess_df['turns'].value_counts()
 
-    plt.figure(figsize = (10,4))
+    #DRAWS SCATTER
+    fig_dtpct, ax = plt.subplots(figsize = (10,4))
     plt.scatter(draw_turns_pct.index, draw_turns_pct, c = 'red')
     plt.title('Distribution of draws percentage related to number of turns ')
-    plt.show()
 
-    """It seems to be an exponential distribution:
-    yp = f(xp) is an exponential function defined as follows:
+    #CHECKBOX FOR COMBINED WIN SCATTER
+    if st.checkbox('SHOW DRAWS PCT PER TURNS SCATTER'):
+        fig_dtpct
+
+
+    """It seems to be an exponential distribution
+    yp = f(xp) defined with the following code:
     """
-
+    st.code("""kp = np.log(2) / 250
+    xp = np.linspace(0, 250, 10000)
+    yp = 0.2 * np.exp(0.0075 * xp) - 0.2""")
+    
     kp = np.log(2) / 250
     xp = np.linspace(0, 250, 10000)
     yp = 0.2 * np.exp(0.0075 * xp) - 0.2
-
-    plt.figure(figsize = (10,4))
+    
+    fig_dce, ax = plt.subplots(figsize = (10,4))
     plt.scatter(draw_turns_pct.index, draw_turns_pct, c = 'red')
     plt.plot(xp, yp)
     plt.xlim(0, 260)
     plt.ylim(-0.1, 1.1)
     plt.title('Distribution of draws percentage related to number of turns ')
 
-    plt.show()
+    #CHECKBOX FOR COMBINED DRAW SCATTER AND EXPONEnTIAL
+    if st.checkbox('SHOW COMBINED PLOT'):
+        fig_dce
 
-    """Now it's generated a logit model that study the influention of number of turns and rating difference between the two players on the probability of a draw."""
+    """At this point, it's generated a logit model that study the influention of number of turns and rating difference between the two players on the probability of a draw."""
 
     variables = ['turns', 'rating_diff']
     x = chess_df[variables]
@@ -369,7 +378,11 @@ with st.expander ('Regression model'):
     model = sm.MNLogit(y_train_chess_df, sm.add_constant(x_train_chess_df))
     result = model.fit()
     stats = result.summary()
-    print(stats)
+    
+    #CHECKBOX FOR LOGIT MODEL
+    if st.checkbox('SHOW REGRESSION MODEL'):
+        stats    
+    """It can be noticed that 'turns', as expected has a positive coefficent, while 'rating_diff' has negative coefficent, as we could immagine."""
 
 """## **D) What are the best opening moves for white player? And for black one?**
 
