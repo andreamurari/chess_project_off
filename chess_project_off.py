@@ -80,7 +80,7 @@ with st.expander('Data handling'):
         chess_df
 
 
-#CORRELATION SUBSECTION
+#GENERAL CORRELATION SUBSECTION
 with st.expander('General correlation'):    
 
     """Here you can see the correlation graphs of the numerical variables in the data set:"""
@@ -148,16 +148,14 @@ with st.expander("Most played type of matches"):
     with col_8:
         st.pyplot(fig_most_played)
     
-
-
-    """It's higlited that the most frequently played match types are the 10+0. All other types are definitely less played."""
+    """It's higlited that the most frequently played match type is the '10+0'. All other types are definitely less played."""
 
 
 #SECTION C
 st.subheader("C. Is there some correlation between starting with white pieces and the outcome of the match?")
 
 with st.expander("Which player wins more matches?"):
-    """As we can see in the following bar chart, white players have few more wins (10.001) than black ones (9.107) but the difference is very small: only 894 matches (4%)."""
+    """As we can see in the following charts, white players have few more wins (10.001) than black ones (9.107) but the difference is very small: only 894 matches (4%)."""
 
     winner_df = chess_df['winner'].value_counts()
 
@@ -170,19 +168,19 @@ with st.expander("Which player wins more matches?"):
     plt.pie(winner_df, labels = winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
     plt.title('Pie-chart of matches outcomes')
 
-    col_7, col_8, col_9 = st.columns(3) 
+    col_10, col_11, col_12 = st.columns(3) 
     
-    with col_7:
+    with col_10:
         #CHECKBOX FOR WINNER DISTRIBUTION CHART
         if st.checkbox('SHOW DISTRIBUTION OF WINNING PLAYER'):
             st.pyplot(fig_oc)
     
-    with col_8:
+    with col_11:
     ##CHECKBOX FOR WINNER DISTRIBUTION PIE
         if st.checkbox('SHOW WINNING PLAYER PIE CHART'):
             st.pyplot(fig_ocp)
         
-    with col_9:
+    with col_12:
         ##CHECKBOX FOR WINNER DISTRIBUTION DF
         if st.checkbox('SHOW WINNING PLAYER DF'):
             winner_df
@@ -195,7 +193,7 @@ with st.expander("Which player wins more matches?"):
 
 with st.expander('How the situation changes when matches became longer in terms of number of turns?'):
     """
-    Here will be analyzed if the difference get bigger o smaller when matches have higher and lower number of turns. 
+    Here will be analyzed if the difference get bigger or smaller when matches have higher or lower number of turns. 
     Matches with 79 or more turns (75% of turns distribution) will be considered many-turns matches and matches with 37 
     or less turns (25% of turns distribution) will be considered few-turns matches.
     """
@@ -222,19 +220,19 @@ with st.expander('How the situation changes when matches became longer in terms 
     plt.pie(mtm_winner_df, labels = mtm_winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
     plt.title('Pie-chart of many-turns matches outcomes')
     
-    col_10, col_11, col_12 = st.columns(3) 
+    col_13, col_14, col_15 = st.columns(3) 
     
-    with col_10:
+    with col_13:
         #CHECKBOX FOR WINNER DISTRIBUTION CHART
         if st.checkbox('SHOW CHART WITH MANY TURNS'):
             st.pyplot(fig_ocmtd)
 
-    with col_11:
+    with col_14:
         #CHECKBOX FOR WINNER DISTRIBUTION CHART
         if st.checkbox('SHOW PIE CHART WITH MANY TURNS'):
             st.pyplot(fig_ocmtp)
                 
-    with col_12:
+    with col_15:
         #CHECKBOX FOR WINNER DISTRIBUTION DF
         if st.checkbox('SHOW DF WITH MANY TURNS'):
             mtm_winner_df
@@ -259,21 +257,21 @@ with st.expander('How the situation changes when matches became longer in terms 
     plt.pie(ftm_winner_df, labels = ftm_winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
     plt.title('Pie-chart of few-turns matches outcomes')
     
-    """By contrast, the percentage of white winning in the few-turns matches DF is increased as you can see in the following charts: """
+    """By contrast, the percentage of white winning in the few-turns matches DF is increased (13%) as you can see in the following charts: """
 
-    col_13, col_14, col_15 = st.columns(3) 
+    col_16, col_17, col_18 = st.columns(3) 
     
-    with col_13:
+    with col_16:
         #CHECKBOX FOR WINNER DISTRIBUTION CHART
         if st.checkbox('SHOW CHART WITH FEW TURNS'):
             st.pyplot(fig_ocftd)
 
-    with col_14:
+    with col_17:
         #CHECKBOX FOR WINNER DISTRIBUTION CHART
         if st.checkbox('SHOW PIE CHART WITH FEW TURNS'):
             st.pyplot(fig_ocftp)
                 
-    with col_15:
+    with col_18:
         #CHECKBOX FOR WINNER DISTRIBUTION DF
         if st.checkbox('SHOW DF WITH FEW TURNS'):
             ftm_winner_df
@@ -287,7 +285,7 @@ with st.expander ('Regression model'):
     from sklearn.metrics import classification_report
     from sklearn.metrics import confusion_matrix
 
-    """Two new DFs are generated: these ones collect the victory percentage of the black and white player depending on the value of variable "turns"."""
+    """Two new DFs are generated: one collect the victory percentage of the black player and the other of the white depending on the value of variable "turns"."""
 
     white_win_mask = chess_df['winner'] == 'white'
     white_win_df = chess_df[white_win_mask]
@@ -301,7 +299,7 @@ with st.expander ('Regression model'):
 
     """*   Blue points reports white players win"""
     """*   Pink points reports black players win"""
-    col_16, col_17 = st.columns(2)
+    col_19, col_20 = st.columns(2)
     
     #WHITE WIN SCATTER
     fig_ws, ax = plt.subplots(figsize = (8,4))
@@ -319,12 +317,12 @@ with st.expander ('Regression model'):
     plt.scatter(bw_turns_pct.index, bw_turns_pct, c = 'pink')
     plt.title('Combination of the two previous graphs ')
 
-    with col_16:
+    with col_19:
         #CHECKBOX FOR WHITE WIN SCATTER
         if st.checkbox('SHOW WHITE WIN SCATTER'):
             fig_ws
     
-    with col_17:
+    with col_20:
         #CHECKBOX FOR BLACK WIN SCATTER
         if st.checkbox('SHOW BLACK WIN SCATTER'):
             fig_bs
@@ -334,10 +332,10 @@ with st.expander ('Regression model'):
         fig_comb_scat
 
 
-    """These graphs show that there is no definite pattern, but it can be noticed that there are many values at the extremes, this is because white usually win in an odd-numbered round, while black in an even-numbered round."""
+    """These graphs show that there is no definite pattern but, it can be noticed that there are many values at the extremes, this is because white usually win in an odd-numbered round, while black in an even-numbered round."""
 
-    """For this reason is much interesting studing the ***distribution of draws***. 
-    Two new columns are introduced in the data set:"""
+    """For this reason is much interesting studying the ***distribution of draws***. 
+    In order to do that two new columns are introduced in the data set:"""
 
     """*   "draws": boolean value that is worth 1 if the match is a tie and 0 if it is not;"""
     """*   "rating_diff" : indicates the rating difference between the two players in absolute value;"""  
@@ -385,7 +383,7 @@ with st.expander ('Regression model'):
     if st.checkbox('SHOW COMBINED PLOT'):
         fig_dce
 
-    """At this point, it's generated a logit model that study the influention of number of turns and rating difference between the two players on the probability of a draw."""
+    """At this point, it's generated a logit model that studies the influence of number of turns and rating difference between the two players on the probability of a draw."""
 
     variables = ['turns', 'rating_diff']
     x = chess_df[variables]
