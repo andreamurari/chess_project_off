@@ -74,7 +74,10 @@ with st.expander('Data handling'):
     "Now the data-set looks like this: "
 
     #SHOWING UPDATED DS
-    chess_df
+    if st.button('SHOW UPDATED DATASET'):
+        if st.button('HIDE UPDATED DATASET'):
+            st.button('SHOW UPDATED DATASET') == False    
+        chess_df
 
 
 #CORRELATION SUBSECTION
@@ -85,10 +88,13 @@ with st.expander('General correlation'):
     chess_corr_df = chess_df.drop(['victory_status', 'winner', 'increment_code', 'opening_eco', 'opening_name'], axis=1, inplace = False )
     chess_corr = chess_corr_df.corr()
 
+    col_1, col_2, col_3 = st.columns([0.15, 0.7, 0.15])
+
     #PLOTTING CORRELATION GRAPH
-    fig_corr, ax = plt.subplots(figsize=(8, 6))  
-    sb.heatmap(chess_corr, annot=True)  
-    st.pyplot(fig_corr)
+    with col_2:
+        fig_corr, ax = plt.subplots(figsize=(8, 6))  
+        sb.heatmap(chess_corr, annot=True)  
+        st.pyplot(fig_corr)
 
     """As a first impression, the only parameters that seems to have a little correlation are:"""
 
@@ -103,12 +109,17 @@ st.subheader("B. Which are the most common matches outcomes? What are the most p
 with st.expander("Most common matches outcomes"):
 
     endgame_reason_df = chess_df['victory_status'].value_counts()
-
-    #PLOTTING ENDGAME REASON PIE CHART
-    fig_outcomes, ax = plt.subplots(figsize=(6,6))
+    """The pie-chart of the end-game reasons looks like this:"""
+    #CREATING ENDGAME REASON PIE CHART
+    fig_outcomes, ax = plt.subplots(figsize=(4.5, 4.5))
     plt.pie(endgame_reason_df, labels = endgame_reason_df.index, autopct = '%i%%')
     plt.title('DISTRIBUTION OF ENDGAME REASON ', fontdict={'fontsize':'10'})
-    st.pyplot(fig_outcomes)
+    
+    col_4, col_5, col_6 = st.columns([0.15, 0.7, 0.15])
+    
+    #PLOTTING ENDGAME REASON PIE CHART
+    with col_5:
+        st.pyplot(fig_outcomes)
 
     """It's easy to see that the most endgame reason is "resign" followed by "checkmate" while "draw" and "out of time" are widely less frequent."""
 
@@ -125,12 +136,19 @@ with st.expander("Most played type of matches"):
     other_series = pd.Series(other_dict)
     all_type_df = most_played_df._append(other_series, ignore_index= False)
 
-    #PLOTTING MOST PLAYED TYPE OF MATCHES
+    #CREATING MOST PLAYED TYPE OF MATCHES
     fig_most_played, ax = plt.subplots(figsize = (6,6))
     explode = (0.04, 0, 0, 0, 0, 0, 0, 0, 0, 0)
     plt.pie(all_type_df, labels = all_type_df.index, explode = explode, autopct = '%i%%')
     plt.title('Most played type of matches', fontdict={'fontsize':'10'})
-    st.pyplot(fig_most_played)
+    
+    col_7, col_8, col_9 = st.columns([0.15, 0.7, 0.15])
+    
+    #PLOTTING ENDGAME REASON PIE CHART
+    with col_8:
+        st.pyplot(fig_most_played)
+    
+
 
     """It's higlited that the most frequently played match types are the 10+0. All other types are definitely less played."""
 
@@ -152,19 +170,19 @@ with st.expander("Which player wins more matches?"):
     plt.pie(winner_df, labels = winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
     plt.title('Pie-chart of matches outcomes')
 
-    col_1, col_2, col_3 = st.columns(3) 
+    col_7, col_8, col_9 = st.columns(3) 
     
-    with col_1:
+    with col_7:
         #CHECKBOX FOR WINNER DISTRIBUTION CHART
         if st.checkbox('SHOW DISTRIBUTION OF WINNING PLAYER'):
             st.pyplot(fig_oc)
     
-    with col_2:
+    with col_8:
     ##CHECKBOX FOR WINNER DISTRIBUTION PIE
         if st.checkbox('SHOW WINNING PLAYER PIE CHART'):
             st.pyplot(fig_ocp)
         
-    with col_3:
+    with col_9:
         ##CHECKBOX FOR WINNER DISTRIBUTION DF
         if st.checkbox('SHOW WINNING PLAYER DF'):
             winner_df
@@ -204,19 +222,19 @@ with st.expander('How the situation changes when matches became longer in terms 
     plt.pie(mtm_winner_df, labels = mtm_winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
     plt.title('Pie-chart of many-turns matches outcomes')
     
-    col_4, col_5, col_6 = st.columns(3) 
+    col_10, col_11, col_12 = st.columns(3) 
     
-    with col_4:
+    with col_10:
         #CHECKBOX FOR WINNER DISTRIBUTION CHART
         if st.checkbox('SHOW CHART WITH MANY TURNS'):
             st.pyplot(fig_ocmtd)
 
-    with col_5:
+    with col_11:
         #CHECKBOX FOR WINNER DISTRIBUTION CHART
         if st.checkbox('SHOW PIE CHART WITH MANY TURNS'):
             st.pyplot(fig_ocmtp)
                 
-    with col_6:
+    with col_12:
         #CHECKBOX FOR WINNER DISTRIBUTION DF
         if st.checkbox('SHOW DF WITH MANY TURNS'):
             mtm_winner_df
@@ -243,19 +261,19 @@ with st.expander('How the situation changes when matches became longer in terms 
     
     """By contrast, the percentage of white winning in the few-turns matches DF is increased as you can see in the following charts: """
 
-    col_7, col_8, col_9 = st.columns(3) 
+    col_13, col_14, col_15 = st.columns(3) 
     
-    with col_7:
+    with col_13:
         #CHECKBOX FOR WINNER DISTRIBUTION CHART
         if st.checkbox('SHOW CHART WITH FEW TURNS'):
             st.pyplot(fig_ocftd)
 
-    with col_8:
+    with col_14:
         #CHECKBOX FOR WINNER DISTRIBUTION CHART
         if st.checkbox('SHOW PIE CHART WITH FEW TURNS'):
             st.pyplot(fig_ocftp)
                 
-    with col_9:
+    with col_15:
         #CHECKBOX FOR WINNER DISTRIBUTION DF
         if st.checkbox('SHOW DF WITH FEW TURNS'):
             ftm_winner_df
@@ -283,7 +301,7 @@ with st.expander ('Regression model'):
 
     """*   Blue points reports white players win"""
     """*   Pink points reports black players win"""
-    col_9, col_10 = st.columns(2)
+    col_16, col_17 = st.columns(2)
     
     #WHITE WIN SCATTER
     fig_ws, ax = plt.subplots(figsize = (8,4))
@@ -301,12 +319,12 @@ with st.expander ('Regression model'):
     plt.scatter(bw_turns_pct.index, bw_turns_pct, c = 'pink')
     plt.title('Combination of the two previous graphs ')
 
-    with col_9:
+    with col_16:
         #CHECKBOX FOR WHITE WIN SCATTER
         if st.checkbox('SHOW WHITE WIN SCATTER'):
             fig_ws
     
-    with col_10:
+    with col_17:
         #CHECKBOX FOR BLACK WIN SCATTER
         if st.checkbox('SHOW BLACK WIN SCATTER'):
             fig_bs
