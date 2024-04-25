@@ -259,9 +259,9 @@ with st.expander('How the situation changes when matches became longer in terms 
         #CHECKBOX FOR WINNER DISTRIBUTION DF
         if st.checkbox('SHOW DF WITH FEW TURNS'):
             ftm_winner_df
-    """From this figure, can also be noticed that the percentage of draws increase in many-turns matches."""
+    """From these pie-charts, can also be noticed that the percentage of draws increase in many-turns matches."""
 
-with st.expander ('Regression model for C.1  question'):
+with st.expander ('Regression model'):
 
     from sklearn.model_selection import train_test_split
     from sklearn.linear_model import LogisticRegression
@@ -279,37 +279,46 @@ with st.expander ('Regression model for C.1  question'):
     ww_turns_pct = white_win_df['turns'].value_counts() / chess_df['turns'].value_counts()
     bw_turns_pct = black_win_df['turns'].value_counts() / chess_df['turns'].value_counts()
 
-    """These two DFs are plotted:
+    """These two DFs are plotted:"""
 
-    *   Blue pallets reports white players win
-    *   Pink pallets reports black players win
-
-
-
-    """
-
-    plt.figure(figsize = (8,4))
+    """*   Blue points reports white players win"""
+    """*   Pink points reports black players win"""
+    col_9, col_10 = st.columns(2)
+    
+    #WHITE WIN SCATTER
+    fig_ws, ax = plt.subplots(figsize = (8,4))
     plt.scatter(ww_turns_pct.index, ww_turns_pct, c = 'skyblue')
     plt.title('Distribution of white winning percentage related to number of turns')
 
-    plt.show()
-
-    plt.figure(figsize = (8,4))
+    #BLACK WIN SCATTER
+    fig_bs, ax = plt.subplots(figsize = (8,4))
     plt.scatter(bw_turns_pct.index, bw_turns_pct, c = 'pink')
     plt.title('Distribution of black winning percentage related to number of turns')
 
-    plt.show()
-
-    plt.figure(figsize = (8,4))
+    #COMBINED SCATTER
+    fig_comb_scat, ax = plt.subplots(figsize = (12,5))
     plt.scatter(ww_turns_pct.index, ww_turns_pct, c = 'skyblue')
     plt.scatter(bw_turns_pct.index, bw_turns_pct, c = 'pink')
     plt.title('Combination of the two previous graphs ')
 
-    plt.show()
+    with col_9:
+        #CHECKBOX FOR WHITE WIN SCATTER
+        if st.checkbox('SHOW WHITE WIN SCATTER'):
+            fig_ws
+    
+    with col_10:
+        #CHECKBOX FOR BLACK WIN SCATTER
+        if st.checkbox('SHOW BLACK WIN SCATTER'):
+            fig_bs
+    
+    #CHECKBOX FOR COMBINED WIN SCATTER
+    if st.checkbox('SHOW COMBINED SCATTER'):
+        fig_comb_scat
 
-    """These graphs show that there is no definite pattern, but it can be noticed that there are many values at the extremes, this is because white usually win in an odd-numbered round, while black in an even-numbered round.
 
-    For this reason is much interesting studing the distribution of draws:
+    """These graphs show that there is no definite pattern, but it can be noticed that there are many values at the extremes, this is because white usually win in an odd-numbered round, while black in an even-numbered round."""
+
+    """For this reason is much interesting studing the distribution of draws:
 
     Now will be introduced two new columns in the data set:
 
