@@ -143,23 +143,34 @@ with st.expander("Which player wins more matches?"):
 
     winner_df = chess_df['winner'].value_counts()
 
-    #CREATING WINNER DISTRIBUTION FIGURE
-    fig_oc, ax = plt.subplots(figsize=(6,4))
+    #DISTRIBUTION CHART
+    fig_oc, ax = plt.subplots(figsize=(3.7,4))
     plt.bar(winner_df.index, winner_df, color = ('skyblue', 'pink', 'red'), edgecolor = 'black')
     plt.title('Distribution of matches outcomes', fontdict={'fontsize':'10'})
-    
-    col_1, col_2 = st.columns(2) 
+    #PIE CHART
+    fig_ocp, ax = plt.subplots(figsize=(6,4))
+    plt.pie(winner_df, labels = winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
+    plt.title('Pie-chart of matches outcomes')
+
+    col_1, col_2, col_3 = st.columns(3) 
     
     with col_1:
         #CHECKBOX FOR WINNER DISTRIBUTION CHART
-        if st.checkbox('SHOW CHART OF DISTRIBUTION OF WINNING PLAYER'):
+        if st.checkbox('SHOW DISTRIBUTION OF WINNING PLAYER'):
             st.pyplot(fig_oc)
     
     with col_2:
+    ##CHECKBOX FOR WINNER DISTRIBUTION PIE
+        if st.checkbox('SHOW WINNING PLAYER PIE CHART'):
+            st.pyplot(fig_ocp)
+        
+    with col_3:
         ##CHECKBOX FOR WINNER DISTRIBUTION DF
-        if st.checkbox('SHOW DF OF DISTRIBUTION OF WINNING PLAYER'):
+        if st.checkbox('SHOW WINNING PLAYER DF'):
             winner_df
     
+    
+            
     difference = chess_df['winner'].value_counts()['white']-chess_df['winner'].value_counts()['black']
     difference_pct = int((chess_df['winner'].value_counts('pct')['white']-chess_df['winner'].value_counts('pct')['black'])*100)
     
@@ -183,19 +194,30 @@ with st.expander('How the situation changes when matches became longer in terms 
     
     """It can be noticed that the percentage of white winning in many-turns matches (1%) is decreased compared to the original data set matches (4%)."""
     
-    fig_ocmt, ax = plt.subplots(figsize=(6,4))
+    #DISTRIBUTION CHART
+    fig_ocmtd, ax = plt.subplots(figsize=(4.3,4))
     plt.bar(mtm_winner_df.index, mtm_winner_df, color = ('skyblue', 'pink', 'red'), edgecolor = 'black')
     plt.title('Distribution of many-turns matches outcomes', fontdict={'fontsize':'10'})
     
-    col_3, col_4 = st.columns(2) 
+    #PIE CHART
+    fig_ocmtp, ax = plt.subplots(figsize=(6,4))
+    plt.pie(mtm_winner_df, labels = mtm_winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
+    plt.title('Pie-chart of many-turns matches outcomes')
     
-    with col_3:
-        #CHECKBOX FOR WINNER DISTRIBUTION CHART
-        if st.checkbox('SHOW CHART WITH MANY TURNS'):
-            st.pyplot(fig_ocmt)
+    col_4, col_5, col_6 = st.columns(3) 
     
     with col_4:
-        ##CHECKBOX FOR WINNER DISTRIBUTION DF
+        #CHECKBOX FOR WINNER DISTRIBUTION CHART
+        if st.checkbox('SHOW CHART WITH MANY TURNS'):
+            st.pyplot(fig_ocmtd)
+
+    with col_5:
+        #CHECKBOX FOR WINNER DISTRIBUTION CHART
+        if st.checkbox('SHOW PIE CHART WITH MANY TURNS'):
+            st.pyplot(fig_ocmtp)
+                
+    with col_6:
+        #CHECKBOX FOR WINNER DISTRIBUTION DF
         if st.checkbox('SHOW DF WITH MANY TURNS'):
             mtm_winner_df
     
@@ -207,45 +229,37 @@ with st.expander('How the situation changes when matches became longer in terms 
     """***FEW-TURNS MATCHES***"""
 
     difference = ftm_winner_df['white']-ftm_winner_df['black']
-    difference
-
     difference_pct = round((few_turns_matches_df['winner'].value_counts('pct')['white']-few_turns_matches_df['winner'].value_counts('pct')['black'])*100)
-    print(difference_pct, '%')
 
-    """By contrast, the percentage of white winning in the few-turns matches DF is increased.
+    #DISTRIBUTION CHART FEW
+    fig_ocftd, ax = plt.subplots(figsize=(3,4))
+    plt.bar(ftm_winner_df.index, ftm_winner_df, color = ('skyblue', 'pink', 'red'), edgecolor = 'black')
+    plt.title('Distribution of few-turns matches outcomes')
+    
+    #PIE CHART FEW
+    fig_ocftp, ax = plt.subplots(figsize=(6,4))
+    plt.pie(ftm_winner_df, labels = ftm_winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
+    plt.title('Pie-chart of few-turns matches outcomes')
+    
+    """By contrast, the percentage of white winning in the few-turns matches DF is increased as you can see in the following charts: """
 
-    ***PLOTS***
-    """
+    col_7, col_8, col_9 = st.columns(3) 
+    
+    with col_7:
+        #CHECKBOX FOR WINNER DISTRIBUTION CHART
+        if st.checkbox('SHOW CHART WITH FEW TURNS'):
+            st.pyplot(fig_ocftd)
 
-    fig_1 = plt.figure(figsize=(10,15))
-    ax_1 = fig_1.add_subplot(3, 2, 1)
-    ax_2 = fig_1.add_subplot(3, 2, 2)
-    ax_3 = fig_1.add_subplot(3, 2, 3)
-    ax_4 = fig_1.add_subplot(3, 2, 4)
-    ax_5 = fig_1.add_subplot(3, 2, 5)
-    ax_6 = fig_1.add_subplot(3, 2, 6)
-
-    ax_1.bar(winner_df.index, winner_df, color = ('skyblue', 'pink', 'red'), edgecolor = 'black')
-    ax_1.set_title('Distribution of matches outcomes')
-
-    ax_2.pie(winner_df, labels = winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
-    ax_2.set_title('Pie-chart of matches outcomes')
-
-    ax_3.bar(ftm_winner_df.index, ftm_winner_df, color = ('skyblue', 'pink', 'red'), edgecolor = 'black')
-    ax_3.set_title('Distribution of few-turns matches outcomes')
-
-    ax_4.pie(ftm_winner_df, labels = ftm_winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
-    ax_4.set_title('Pie-chart of few-turns matches outcomes')
-
-    ax_5.bar(mtm_winner_df.index, mtm_winner_df, color = ('skyblue', 'pink', 'red'), edgecolor = 'black')
-    ax_5.set_title('Distribution of many-turns matches outcomes')
-
-    ax_6.pie(mtm_winner_df, labels = mtm_winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
-    ax_6.set_title('Pie-chart of many-turns matches outcomes')
-
-    plt.show()
-
-    """From this figure, can also be noticed that the percentage of draws increas in many-turns matches."""
+    with col_8:
+        #CHECKBOX FOR WINNER DISTRIBUTION CHART
+        if st.checkbox('SHOW PIE CHART WITH FEW TURNS'):
+            st.pyplot(fig_ocftp)
+                
+    with col_9:
+        #CHECKBOX FOR WINNER DISTRIBUTION DF
+        if st.checkbox('SHOW DF WITH FEW TURNS'):
+            ftm_winner_df
+    """From this figure, can also be noticed that the percentage of draws increase in many-turns matches."""
 
 with st.expander ('Regression model for C.1  question'):
 
