@@ -443,58 +443,61 @@ with st.expander('Data-set adaptation'):
         if st.checkbox('SHOW DELTA DF'):
             delta_pct
 
-"""***PLOTS***"""
+with st.expander('Plots and analysis'):
 
-plt.figure(figsize = (10,4))
-plt.bar(co_white_win_pct_df.index, co_white_win_pct_df, color = ('skyblue'), edgecolor = 'black')
-plt.title('Most common openings when \nWHITE player wins', fontdict={'fontsize':'20'})
+    """Here you can see the plots of most common openings when white and black player win"""
 
-plt.show()
+    fig_cow, ax = plt.subplots(figsize = (10,4))
+    plt.bar(co_white_win_pct_df.index, co_white_win_pct_df, color = ('skyblue'), edgecolor = 'black')
+    plt.title('Most common openings when \nWHITE player wins', fontdict={'fontsize':'20'})
 
-"""This bar-chart shows that the distribution of opening moves is quite regular: the frequencies of C00, A00, C41, B00, B01, D00 and A40 are very close."""
+    if st.checkbox('SHOW WHITE PLAYER CHART'):
+        st.pyplot(fig_cow)
+    """This bar-chart shows that the distribution of opening moves is quite regular: the frequencies of C00, A00, C41, B00, B01, D00 and A40 are very close."""
 
-plt.figure(figsize = (10,4))
-plt.bar(co_black_win_pct_df.index, co_black_win_pct_df, color = ('pink'), edgecolor = 'black')
-plt.title('Most common openings when \nBLACK player wins', fontdict={'fontsize':'20'})
+    fig_cob, ax = plt.subplots(figsize = (10,4))
+    plt.bar(co_black_win_pct_df.index, co_black_win_pct_df, color = ('pink'), edgecolor = 'black')
+    plt.title('Most common openings when \nBLACK player wins', fontdict={'fontsize':'20'})
 
-plt.show()
+    if st.checkbox('SHOW BLACK PLAYER CHART'):
+        st.pyplot(fig_cob)
 
-"""In this case, howevere, the distribution has a peak in A00, but then it's quite regular."""
+    """In this case, howevere, the distribution has a peak in A00, but then it's quite regular."""
 
-plt.figure(figsize = (10,4))
-plt.bar(delta_pct.index, delta_pct, color = ('lightgreen'), edgecolor = 'black')
-plt.title('Delta of best opening moves', fontdict={'fontsize':'20'})
+    plt.figure(figsize = (10,4))
+    plt.bar(delta_pct.index, delta_pct, color = ('lightgreen'), edgecolor = 'black')
+    plt.title('Delta of best opening moves', fontdict={'fontsize':'20'})
 
-plt.show()
+    plt.show()
 
-"""This bar-chart must be read as follows:
-
-
-*   positive values refear to good openings for black player;
-*   negtive values refear to good openings for white player.
-
-(Example: B00: -0,25 indicates that in a match that has B00 as opening, white has a 25% greater chance of winning than black.)
-
-**NOTE:** C40 can be considered the best opening move for black player with an efficency of almost 100%. This happens because C40 is rarely linked to a victory by the white player, so it recived a FALSE boolean value in the "common_opening_white_win_mask".
-
-From this DF will be removed all the values under 10%: these openeing moves are considered only because they are quite frequently used but they are not linked to a significant difference of winning probability.
-
-"""
-
-significant_mask = abs(delta_pct) > 0.1
-significant_delta = delta_pct[significant_mask]
-significant_delta
-
-plt.figure(figsize = (10,4))
-plt.bar(significant_delta.index, significant_delta, color = ('green'), edgecolor = 'black')
-plt.title('Delta of significant best opening moves', fontdict={'fontsize':'20'})
-
-plt.show()
-
-"""This graph highlites that:
-
-*   **C40** is the best opening move for black player, but also **A00** and **B00** are good choice;
-*   **A40**, **B00** and **C41** are the best opeing options for white player.
+    """This bar-chart must be read as follows:
 
 
-"""
+    *   positive values refear to good openings for black player;
+    *   negtive values refear to good openings for white player.
+
+    (Example: B00: -0,25 indicates that in a match that has B00 as opening, white has a 25% greater chance of winning than black.)
+
+    **NOTE:** C40 can be considered the best opening move for black player with an efficency of almost 100%. This happens because C40 is rarely linked to a victory by the white player, so it recived a FALSE boolean value in the "common_opening_white_win_mask".
+
+    From this DF will be removed all the values under 10%: these openeing moves are considered only because they are quite frequently used but they are not linked to a significant difference of winning probability.
+
+    """
+
+    significant_mask = abs(delta_pct) > 0.1
+    significant_delta = delta_pct[significant_mask]
+    significant_delta
+
+    plt.figure(figsize = (10,4))
+    plt.bar(significant_delta.index, significant_delta, color = ('green'), edgecolor = 'black')
+    plt.title('Delta of significant best opening moves', fontdict={'fontsize':'20'})
+
+    plt.show()
+
+    """This graph highlites that:
+
+    *   **C40** is the best opening move for black player, but also **A00** and **B00** are good choice;
+    *   **A40**, **B00** and **C41** are the best opeing options for white player.
+
+
+    """
