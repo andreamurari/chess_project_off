@@ -42,7 +42,7 @@ with st.expander('General informations'):
     *  Opening Name;
     *  Opening Ply (Number of moves in the opening phase);
     """
-    chess_df = pd.read_csv(r'C:\Users\murar\Desktop\chess_project\chess.csv')
+    chess_df = pd.read_csv(r'C:\Users\filip\Desktop\chess_project_off\chess.csv')
 
     #BUTTON FOR ORIGINAL DS
     if st.button('SHOW DATASET'):
@@ -364,6 +364,7 @@ with st.expander ('Regression model'):
     """It seems to be an exponential distribution
     yp = f(xp) defined with the following code:
     """
+    #REPORTING CODE FOR EXPONENTIAL CURVE
     st.code("""kp = np.log(2) / 250
     xp = np.linspace(0, 250, 10000)
     yp = 0.2 * np.exp(0.0075 * xp) - 0.2""")
@@ -400,36 +401,47 @@ with st.expander ('Regression model'):
         stats    
     """It can be noticed that 'turns', as expected has a positive coefficent, while 'rating_diff' has negative coefficent, as we could immagine."""
 
-"""## **D) What are the best opening moves for white player? And for black one?**
+st.subheader("D. What are the best opening moves for white player? And for black one?")
 
-***DATA-FRAMES GENERATION***
+with st.expander('Data-set adaptation'):
 
-Two new DataFrames are generated: the first goups the most common openings when white player wins and the second is the same but for matches in wich black player is the winner (only openings that have been used at least 2% of the considered matches are analyzed).
-"""
+    """Two new DataFrames are generated: the first goups the most common openings when white player wins and the second is the same but 
+    for matches in wich black player is the winner (only openings that have been used at least 2% of the considered matches are analyzed).
+    """
+    #GENERATING DF
+    common_openings_white_win_mask = white_win_df['opening_eco'].value_counts('pct') > 0.02
+    co_white_win_df = white_win_df['opening_eco'].value_counts()[common_openings_white_win_mask]
+    co_white_win_pct_df = co_white_win_df / co_white_win_df.sum()
+    common_openings_black_win_mask = black_win_df['opening_eco'].value_counts('pct') > 0.02
+    co_black_win_df = black_win_df['opening_eco'].value_counts()[common_openings_black_win_mask]
+    co_black_win_pct_df = co_black_win_df / co_black_win_df.sum()
 
-common_openings_white_win_mask = white_win_df['opening_eco'].value_counts('pct') > 0.02
-co_white_win_df = white_win_df['opening_eco'].value_counts()[common_openings_white_win_mask]
+    #PLOTTING DFs
+    col_21, col_22, col_23, col_24 = st.columns(4)
+    with col_22:
+        if st.checkbox('SHOW WHITE DF'):   
+            co_white_win_pct_df
 
-co_white_win_pct_df = co_white_win_df / co_white_win_df.sum()
+    with col_23:
+        if st.checkbox('SHOW BLACK DF'):
+            co_black_win_pct_df
 
-co_white_win_pct_df
+    """Now, in order to compare white and black best opening moves, it's generated a new DF as follows:"""
 
-common_openings_black_win_mask = black_win_df['opening_eco'].value_counts('pct') > 0.02
-co_black_win_df = black_win_df['opening_eco'].value_counts()[common_openings_black_win_mask]
-co_black_win_pct_df = co_black_win_df / co_black_win_df.sum()
-
-co_black_win_pct_df
-
-"""Now, in order to compare white and black best opening moves, it's generated a new DF as follows:"""
-
-delta = co_black_win_df - co_white_win_df
-delta.fillna(co_black_win_df, inplace = True)
-delta.fillna(co_white_win_df, inplace = True)
-
-delta_pct = delta / (co_black_win_df + co_white_win_df)
-delta_pct.fillna(delta / co_black_win_df, inplace = True)
-delta_pct.fillna(delta / co_white_win_df, inplace = True)
-delta_pct
+    #GENERATING DF
+    delta = co_black_win_df - co_white_win_df
+    delta.fillna(co_black_win_df, inplace = True)
+    delta.fillna(co_white_win_df, inplace = True)
+    delta_pct = delta / (co_black_win_df + co_white_win_df)
+    delta_pct.fillna(delta / co_black_win_df, inplace = True)
+    delta_pct.fillna(delta / co_white_win_df, inplace = True)
+    
+    #PLOTTING DF
+    col_25, col_26, col_27 = st.columns(3)
+    
+    with col_26:
+        if st.checkbox('SHOW DELTA DF'):
+            delta_pct
 
 """***PLOTS***"""
 
