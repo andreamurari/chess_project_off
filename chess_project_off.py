@@ -485,29 +485,27 @@ with st.expander('Plots and analysis'):
         st.pyplot(fig_comb_delta)
     """**NOTE:** C40 can be considered the best opening move for black player with an efficency of almost 100%. This happens because C40 is rarely linked to 
     a victory by the white player, so it recived a FALSE boolean value in the "common_opening_white_win_mask"."""
-  
-
-
-
 
     """From this DF will be removed all the values under 10%: these openeing moves are considered only because they are quite frequently used 
     but they are not linked to a significant difference of winning probability."""
-
-
+    #REMOVING NOT SIGNIFICANT VALUES
     significant_mask = abs(delta_pct) > 0.1
     significant_delta = delta_pct[significant_mask]
-    significant_delta
 
-    plt.figure(figsize = (10,4))
+    #CHECKBOX FOR SIGNIFICANT DELTA PCT
+    if st.checkbox('SHOW SIGNIFICANT DELTA DF'):
+        significant_delta
+
+
+    #PLOTTING SIGNIFICANT DELTA PCT
+    fig_sig_delta, ax = plt.subplots(figsize = (10,4))
     plt.bar(significant_delta.index, significant_delta, color = ('green'), edgecolor = 'black')
     plt.title('Delta of significant best opening moves', fontdict={'fontsize':'20'})
 
-    plt.show()
+    if st.checkbox('SHOW SIGNIFICANT DELTA CHART'):
+        st.pyplot(fig_sig_delta)
 
-    """This graph highlites that:
+    """This graph highlites that:"""
 
-    *   **C40** is the best opening move for black player, but also **A00** and **B00** are good choice;
-    *   **A40**, **B00** and **C41** are the best opeing options for white player.
-
-
-    """
+    """*   **C40** is the best opening move for black player, but also **A00** and **B00** are good choice;"""
+    """*   **A40**, **B00** and **C41** are the best opeing options for white player."""
