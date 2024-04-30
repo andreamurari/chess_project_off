@@ -469,25 +469,30 @@ with st.expander('Plots and analysis'):
 
     """In this case, howevere, the distribution has a peak in A00, but then it's quite regular."""
 
-    plt.figure(figsize = (10,4))
+    """Below it's plotted the chart of delta percentage of winning related to each opening move-set between the two players.
+    This bar-chart must be read as follows:"""
+
+
+    """*   positive values refear to good openings for black player;"""
+    """*   negtive values refear to good openings for white player."""
+
+    """(Example: B00: -0,25 indicates that in a match that has B00 as opening, white has a 25% greater chance of winning than black.)"""
+    fig_comb_delta, ax = plt.subplots(figsize = (10,4))
     plt.bar(delta_pct.index, delta_pct, color = ('lightgreen'), edgecolor = 'black')
     plt.title('Delta of best opening moves', fontdict={'fontsize':'20'})
+    
+    if st.checkbox('SHOW COMBINED DELTA CHART'):
+        st.pyplot(fig_comb_delta)
+    """**NOTE:** C40 can be considered the best opening move for black player with an efficency of almost 100%. This happens because C40 is rarely linked to 
+    a victory by the white player, so it recived a FALSE boolean value in the "common_opening_white_win_mask"."""
+  
 
-    plt.show()
-
-    """This bar-chart must be read as follows:
 
 
-    *   positive values refear to good openings for black player;
-    *   negtive values refear to good openings for white player.
 
-    (Example: B00: -0,25 indicates that in a match that has B00 as opening, white has a 25% greater chance of winning than black.)
+    """From this DF will be removed all the values under 10%: these openeing moves are considered only because they are quite frequently used 
+    but they are not linked to a significant difference of winning probability."""
 
-    **NOTE:** C40 can be considered the best opening move for black player with an efficency of almost 100%. This happens because C40 is rarely linked to a victory by the white player, so it recived a FALSE boolean value in the "common_opening_white_win_mask".
-
-    From this DF will be removed all the values under 10%: these openeing moves are considered only because they are quite frequently used but they are not linked to a significant difference of winning probability.
-
-    """
 
     significant_mask = abs(delta_pct) > 0.1
     significant_delta = delta_pct[significant_mask]
