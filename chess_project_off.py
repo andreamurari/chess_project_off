@@ -16,7 +16,7 @@ import sklearn as skl
 import statsmodels.api as sm
 import streamlit as st
 
-st.title('**Chess Project**')
+st.title('**:chess_pawn: Chess Project:chess_pawn:**')
 
 #SECTION A
 st.subheader('A. Data-set presentation')
@@ -45,15 +45,12 @@ with st.expander('General informations'):
     chess_df = pd.read_csv(r'C:\Users\filip\Desktop\chess_project_off\chess.csv')
 
     #BUTTON FOR ORIGINAL DS
-    if st.button('SHOW DATASET'):
-        if st.button('HIDE DATASET'):
-            st.button('SHOW DATASET') == False    
+    if st.checkbox('SHOW DATASET'):
         chess_df    
     
+    """Below can be seen a summary of statistical proprieties of the data-set"""
     #BUTTON FOR CHESS_DF.DESCRIBE()
-    if st.button('SHOW SUMMARY OF STATISTICAL PROPERTIES'):
-        if st.button('HIDE SUMMARY OF STATISTICAL PROPERTIES'):
-            st.button('SHOW SUMMARY OF STATISTICAL PROPERTIES') == False   
+    if st.checkbox('SHOW SUMMARY OF STATISTICAL PROPERTIES'):
         st.write(chess_df.describe())
 
 
@@ -74,9 +71,7 @@ with st.expander('Data handling'):
     "Now the data-set looks like this: "
 
     #SHOWING UPDATED DS
-    if st.button('SHOW UPDATED DATASET'):
-        if st.button('HIDE UPDATED DATASET'):
-            st.button('SHOW UPDATED DATASET') == False    
+    if st.checkbox('SHOW UPDATED DATASET'):
         chess_df
 
 
