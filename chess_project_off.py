@@ -16,7 +16,7 @@ import sklearn as skl
 import statsmodels.api as sm
 import streamlit as st
 
-st.title('**:chess_pawn: Chess Project:chess_pawn:**')
+st.title('**:chess_pawn: Chess Project :chess_pawn:**')
 
 #INTRODUTCION
 st.subheader('Introduction')
@@ -70,8 +70,8 @@ with st.expander('Data handling'):
     chess_df_backup = chess_df.copy() #BACKUP OF ORIGINAL DS
 
     """All the columns that will not be used are dropped and two new columns are added:"""
-    """* "white_win" : equals 1 if winner it's white player, 0 otherwise;"""
-    """* "black_win" : equals 1 if winner it's black player, 0 otherwise.
+    """* **"white_win"** : equals 1 if winner it's white player, 0 otherwise;"""
+    """* **"black_win"** : equals 1 if winner it's black player, 0 otherwise.
     """
     #DROOPING UNNECESSARY COLUMNS AND ADDED NEW ONES 
     chess_df.drop(['moves', 'white_id', 'black_id', 'id', 'created_at', 'last_move_at', 'rated'], axis=1, inplace = True )
@@ -88,7 +88,7 @@ with st.expander('Data handling'):
 #GENERAL CORRELATION SUBSECTION
 with st.expander('General correlation'):    
 
-    """Here you can see the correlation graphs of the numerical variables in the data set:"""
+    """Here you can see the **correlation graphs** of the numerical variables in the data set:"""
 
     chess_corr_df = chess_df.drop(['victory_status', 'winner', 'increment_code', 'opening_eco', 'opening_name'], axis=1, inplace = False )
     chess_corr = chess_corr_df.corr()
@@ -132,7 +132,7 @@ with st.expander("Most common matches outcomes"):
 with st.expander("Most played type of matches"):
 
     """It's generated a data frame of the most played type of matches. 
-    The type of matches played less than 2% (of the total 20.000+ matches) are grouped with index 'other'."""
+    The type of matches played less than 2% (of the total 20.000+ matches) are grouped with index 'other'. The plot of this df looks like this:"""
 
     most_played_mask = chess_df['increment_code'].value_counts() > chess_df['increment_code'].value_counts().sum() * 0.02
     most_played_df = chess_df['increment_code'].value_counts()[most_played_mask]
