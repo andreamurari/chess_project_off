@@ -18,6 +18,16 @@ import streamlit as st
 
 st.title('**:chess_pawn: Chess Project:chess_pawn:**')
 
+#INTRODUTCION
+st.subheader('Introduction')
+"""This project wants to explore the world of chess using this data set:
+
+https://www.kaggle.com/datasets/datasnaek/chess
+
+The goal of this study is to analyse how much starting first (having the white pieces) affects the game's victory probability and whether this effect, 
+in games with more turns, is less impactful.
+In addition, it will also be investigated which opening moves are most frequently used and also those that most frequently lead to a win.  """
+
 #SECTION A
 st.subheader('A. Data-set presentation')
 
