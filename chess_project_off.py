@@ -508,9 +508,10 @@ with st.expander('**Plots and analysis**'):
     """This graph highlites that:"""
 
     """*   **C40** is the best opening move for black player, but also **A00** and **B20** will probably lead to a win;"""
+  
     col_28, col_29, col_30, col_31, col_32, = st.columns(5)
+  
     #BUTTONS FOR OPENINGS LINK
-    
     with col_28:
             st.link_button('LOOK AT A00', 'https://chessopenings.com/eco/A00/1/')
     
@@ -520,7 +521,9 @@ with st.expander('**Plots and analysis**'):
         st.link_button('LOOK AT C40', 'https://chessopenings.com/eco/C40/1/')
     
     """*   **A40**, **B00** and **C41** are the best opeing options for white player."""
+   
     col_33, col_34, col_35, col_36, col_37, = st.columns(5)
+   
     #BUTTONS FOR OPENINGS LINK
     with col_33:
         st.link_button('LOOK AT A40', 'https://chessopenings.com/eco/A40/1/')
@@ -531,7 +534,6 @@ with st.expander('**Plots and analysis**'):
     with col_37:
             st.link_button('LOOK AT C41', 'https://chessopenings.com/eco/C41/1/')
 
-    
     
 st.subheader('E. Data-set download and conclusions ')
 
@@ -552,5 +554,3 @@ with st.expander('**Final statements**'):
     """* the increase rating difference between the two players implies a slight decrease on the probability of a draw;"""
     """* **C40**, **A00** and **B20** can lead more probably to a black player win;"""
     """* **A40**, **B00** and **C41** can lead more probably to a white player win."""
-
-
