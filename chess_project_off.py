@@ -25,14 +25,14 @@ st.subheader('Introduction')
 https://www.kaggle.com/datasets/datasnaek/chess
 
 The goal of this study is to analyse how much starting first (having the white pieces) affects the game's victory probability and whether this effect, 
-in games with more turns, is less impactful.
-In addition, it will also be investigated which opening moves are most frequently used and also those that most frequently lead to a win.  """
+in games with more turns, is more or less impactful.
+\nIn addition, it will also be investigated which opening moves are most frequently used and also those that most frequently lead to a win.  """
 
 #SECTION A
 st.subheader('A. Data-set presentation')
 
 #GENERAL INFO SUBSECTION
-with st.expander('General informations'):
+with st.expander('**General informations**'):
     """
     This data-set groups data from more than 20,000 games collected from a selection of users on the site Lichess.org. This set contains:
     *  Game ID;
@@ -65,7 +65,7 @@ with st.expander('General informations'):
 
 
 #DATA HANDLING SUBSECTION
-with st.expander('Data handling'):
+with st.expander('**Data handling**'):
 
     chess_df_backup = chess_df.copy() #BACKUP OF ORIGINAL DS
 
@@ -86,7 +86,7 @@ with st.expander('Data handling'):
 
 
 #GENERAL CORRELATION SUBSECTION
-with st.expander('General correlation'):    
+with st.expander('**General correlation**'):    
 
     """Here you can see the **correlation graphs** of the numerical variables in the data set:"""
 
@@ -111,7 +111,7 @@ with st.expander('General correlation'):
 st.subheader("B. Which are the most common matches outcomes? What are the most played type of matches?")
 
 #OUTCOMES SUBSECTION
-with st.expander("Most common matches outcomes"):
+with st.expander("**Most common matches outcomes**"):
 
     endgame_reason_df = chess_df['victory_status'].value_counts()
     """The pie-chart of the end-game reasons looks like this:"""
@@ -129,7 +129,7 @@ with st.expander("Most common matches outcomes"):
     """It's easy to see that the most endgame reason is "resign" followed by "checkmate" while "draw" and "out of time" are widely less frequent."""
 
 #TYPE OF MATCHES SUBSECTION
-with st.expander("Most played type of matches"):
+with st.expander("**Most played type of matches**"):
 
     """It's generated a data frame of the most played type of matches. 
     The type of matches played less than 2% (of the total 20.000+ matches) are grouped with index 'other'. The plot of this df looks like this:"""
@@ -159,7 +159,7 @@ with st.expander("Most played type of matches"):
 #SECTION C
 st.subheader("C. Is there some correlation between starting with white pieces and the outcome of the match?")
 
-with st.expander("Which player wins more matches?"):
+with st.expander("**Which player wins more matches?**"):
     """As we can see in the following charts, white players have few more wins (10.001) than black ones (9.107) but the difference is very small: only 894 matches (4%)."""
 
     winner_df = chess_df['winner'].value_counts()
@@ -196,7 +196,7 @@ with st.expander("Which player wins more matches?"):
     difference_pct = int((chess_df['winner'].value_counts('pct')['white']-chess_df['winner'].value_counts('pct')['black'])*100)
     
 
-with st.expander('How the situation changes when matches became longer in terms of number of turns?'):
+with st.expander('**How the situation changes when matches became longer in terms of number of turns?**'):
     """
     Here will be analyzed if the difference get bigger or smaller when matches have higher or lower number of turns. 
     Matches with 79 or more turns (75% of turns distribution) will be considered many-turns matches and matches with 37 
@@ -282,7 +282,7 @@ with st.expander('How the situation changes when matches became longer in terms 
             ftm_winner_df
     """From these pie-charts, can also be noticed that the percentage of draws increase in many-turns matches."""
 
-with st.expander ('Regression model'):
+with st.expander ('**Regression model**'):
 
     from sklearn.model_selection import train_test_split
     from sklearn.linear_model import LogisticRegression
@@ -408,7 +408,7 @@ with st.expander ('Regression model'):
 
 st.subheader("D. What are the best opening moves for white player? And for black one?")
 
-with st.expander('Data-set adaptation'):
+with st.expander('**Data-set adaptation**'):
 
     """Two new DataFrames are generated: the first goups the most common openings when white player wins and the second is the same but 
     for matches in wich black player is the winner (only openings that have been used at least 2% of the considered matches are analyzed).
@@ -448,7 +448,7 @@ with st.expander('Data-set adaptation'):
         if st.checkbox('SHOW DELTA DF'):
             delta_pct
 
-with st.expander('Plots and analysis'):
+with st.expander('**Plots and analysis**'):
 
     """Here you can see the plots of most common openings when white and black player win"""
 
@@ -507,14 +507,37 @@ with st.expander('Plots and analysis'):
 
     """This graph highlites that:"""
 
-    """*   **C40** is the best opening move for black player, but also **A00** and **B00** are good choice;"""
+    """*   **C40** is the best opening move for black player, but also **A00** and **B20** will probably lead to a win;"""
+    col_28, col_29, col_30, col_31, col_32, = st.columns(5)
+    #BUTTONS FOR OPENINGS LINK
+    
+    with col_28:
+            st.link_button('LOOK AT A00', 'https://chessopenings.com/eco/A00/1/')
+    
+    with col_30:
+            st.link_button('LOOK AT B20', 'https://chessopenings.com/eco/B200/1/')
+    with col_32:
+        st.link_button('LOOK AT C40', 'https://chessopenings.com/eco/C40/1/')
+    
     """*   **A40**, **B00** and **C41** are the best opeing options for white player."""
+    col_33, col_34, col_35, col_36, col_37, = st.columns(5)
+    #BUTTONS FOR OPENINGS LINK
+    with col_33:
+        st.link_button('LOOK AT A40', 'https://chessopenings.com/eco/A40/1/')
+    
+    with col_35:
+            st.link_button('LOOK AT B00', 'https://chessopenings.com/eco/B00/1/')
+    
+    with col_37:
+            st.link_button('LOOK AT C41', 'https://chessopenings.com/eco/C41/1/')
 
+    
+    
 st.subheader('E. Data-set download and conclusions ')
 
 #DATA SET DOWNLOAD
 
-with st.expander('Download final DS'):
+with st.expander('**Download final DS**'):
     
     """Here can be downloaded the final dataset (with all the added columns and without the dropped ones) clicking on the dounload button below."""
     def dl_ds (ds):
@@ -522,12 +545,12 @@ with st.expander('Download final DS'):
 
     st.download_button('DOWNLOAD FINAL DATA-SET', dl_ds(chess_df), file_name = 'chess_ds.csv')
 
-with st.expander('Final statements'):
-    """In conclusion, it can be stated that: """
+with st.expander('**Final statements**'):
+    """In conclusion, according to the results of this study, it can be stated that: """
     """* moving first slightly favours the white player but this effect is less pronounced as the number of turns increases (the number of draws increases exponentially). 
     This happens because chess is a game which tends to be fair to both players;"""
     """* the increase rating difference between the two players implies a slight decrease on the probability of a draw;"""
-    """* **C40**, **A00** and **B00** usually lead to a black player win;"""
-    """* **A40**, **B00** and **C41** usually lead to a white player win."""
+    """* **C40**, **A00** and **B20** can lead more probably to a black player win;"""
+    """* **A40**, **B00** and **C41** can lead more probably to a white player win."""
 
 
