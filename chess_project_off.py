@@ -52,7 +52,7 @@ with st.expander('**General informations**'):
     *  Opening Name;
     *  Opening Ply (Number of moves in the opening phase);
     """
-    chess_df = pd.read_csv(r'C:\Users\filip\Desktop\chess_project_off\chess.csv')
+    chess_df = pd.read_csv(r"C:\Users\murar\Desktop\chess_project_off\chess.csv")
 
     #BUTTON FOR ORIGINAL DS
     if st.checkbox('SHOW DATASET'):
@@ -516,7 +516,7 @@ with st.expander('**Plots and analysis**'):
             st.link_button('LOOK AT A00', 'https://chessopenings.com/eco/A00/1/')
     
     with col_30:
-            st.link_button('LOOK AT B20', 'https://chessopenings.com/eco/B200/1/')
+            st.link_button('LOOK AT B20', 'https://chessopenings.com/eco/B20/1/')
     with col_32:
         st.link_button('LOOK AT C40', 'https://chessopenings.com/eco/C40/1/')
     
