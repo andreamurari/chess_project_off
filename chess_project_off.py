@@ -16,7 +16,7 @@ import sklearn as skl
 import statsmodels.api as sm
 import streamlit as st
 
-st.title('**:chess_pawn: Chess Project :chess_pawn:**')
+st.title('**:chess_pawn: Check Mated by Data :chess_pawn:**')
 
 #INTRODUTCION
 st.subheader('Introduction')
