@@ -404,7 +404,7 @@ with st.expander ('**Regression model**'):
     #CHECKBOX FOR LOGIT MODEL
     if st.checkbox('SHOW REGRESSION MODEL'):
         stats    
-    """It can be noticed that 'turns', as expected has a positive coefficent, while 'rating_diff' has negative coefficent, as we could immagine."""
+    """It can be noticed that 'turns' has a positive coefficent, while 'rating_diff' has negative coefficent, as expected ."""
 
 st.subheader("D. What are the best opening moves for white player? And for black one?")
 
