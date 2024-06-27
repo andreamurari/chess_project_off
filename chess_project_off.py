@@ -32,7 +32,7 @@ in games with more turns, is more or less impactful.
 st.subheader('A. Data-set presentation')
 
 #GENERAL INFO SUBSECTION
-with st.expander('**General informations**'):
+with st.expander('**General information**'):
     """
     This data-set groups data from more than 20,000 games collected from a selection of users on the site Lichess.org. This set contains:
     *  Game ID;
@@ -48,7 +48,7 @@ with st.expander('**General informations**'):
     *  Black Player ID;
     *  Black Player Rating;
     *  All Moves in Standard Chess Notation;
-    *  Opening Eco (Standardised Code for any given opening);
+    *  Opening Eco (Standardized Code for any given opening);
     *  Opening Name;
     *  Opening Ply (Number of moves in the opening phase);
     """
@@ -153,7 +153,7 @@ with st.expander("**Most played type of matches**"):
     with col_8:
         st.pyplot(fig_most_played)
     
-    """It's higlited that the most frequently played match type is the '10+0'. All other types are definitely less played."""
+    """It can be noticed that the most frequently played match type is the '10+0'. All other types are definitely less played."""
 
 
 #SECTION C
@@ -404,14 +404,14 @@ with st.expander ('**Regression model**'):
     #CHECKBOX FOR LOGIT MODEL
     if st.checkbox('SHOW REGRESSION MODEL'):
         stats    
-    """It can be noticed that 'turns' has a positive coefficent, while 'rating_diff' has negative coefficent, as expected."""
+    """It can be noticed that 'turns' has a positive coefficient, while 'rating_diff' has negative coefficient, as expected."""
 
 st.subheader("D. What are the best opening moves for white player? And for black one?")
 
 with st.expander('**Data-set adaptation**'):
 
-    """Two new DataFrames are generated: the first goups the most common openings when white player wins and the second is the same but 
-    for matches in wich black player is the winner (only openings that have been used at least 2% of the considered matches are analyzed).
+    """Two new DataFrames are generated: the first groups the most common openings when white player wins and the second is the same but 
+    for matches in which black player is the winner (only openings that have been used at least 2% of the considered matches are analyzed).
     """
     #GENERATING DF
     common_openings_white_win_mask = white_win_df['opening_eco'].value_counts('pct') > 0.02
@@ -467,14 +467,14 @@ with st.expander('**Plots and analysis**'):
     if st.checkbox('SHOW BLACK PLAYER CHART'):
         st.pyplot(fig_cob)
 
-    """In this case, howevere, the distribution has a peak in A00, but then it's quite regular."""
+    """In this case, however, the distribution has a peak in A00, but then it's quite regular."""
 
     """Below it's plotted the chart of delta percentage of winning related to each opening move-set between the two players.
     This bar-chart must be read as follows:"""
 
 
-    """*   positive values refear to good openings for black player;"""
-    """*   negtive values refear to good openings for white player."""
+    """*   positive values refer to good openings for black player;"""
+    """*   negative values refer to good openings for white player."""
 
     """(Example: B00: -0,25 indicates that in a match that has B00 as opening, white has a 25% greater chance of winning than black.)"""
     fig_comb_delta, ax = plt.subplots(figsize = (10,4))
@@ -483,10 +483,10 @@ with st.expander('**Plots and analysis**'):
     
     if st.checkbox('SHOW COMBINED DELTA CHART'):
         st.pyplot(fig_comb_delta)
-    """**NOTE:** C40 can be considered the best opening move for black player with an efficency of almost 100%. This happens because C40 is rarely linked to 
-    a victory by the white player, so it recived a FALSE boolean value in the "common_opening_white_win_mask"."""
+    """**NOTE:** C40 can be considered the best opening move for black player with an efficiency of almost 100%. This happens because C40 is rarely linked to 
+    a victory by the white player, so it received a FALSE boolean value in the "common_opening_white_win_mask"."""
 
-    """From this DF will be removed all the values under 10%: these openeing moves are considered only because they are quite frequently used 
+    """From this DF will be removed all the values under 10%: these opening moves are considered only because they are quite frequently used 
     but they are not linked to a significant difference of winning probability."""
     #REMOVING NOT SIGNIFICANT VALUES
     significant_mask = abs(delta_pct) > 0.1
@@ -505,7 +505,7 @@ with st.expander('**Plots and analysis**'):
     if st.checkbox('SHOW SIGNIFICANT DELTA CHART'):
         st.pyplot(fig_sig_delta)
 
-    """This graph highlites that:"""
+    """This graph highlights that:"""
 
     """*   **C40** is the best opening move for black player, but also **A00** and **B20** will probably lead to a win;"""
   
@@ -520,7 +520,7 @@ with st.expander('**Plots and analysis**'):
     with col_32:
         st.link_button('LOOK AT C40', 'https://chessopenings.com/eco/C40/1/')
     
-    """*   **A40**, **B00** and **C41** are the best opeing options for white player."""
+    """*   **A40**, **B00** and **C41** are the best opening options for white player."""
    
     col_33, col_34, col_35, col_36, col_37, = st.columns(5)
    
@@ -541,7 +541,7 @@ st.subheader('E. Data-set download and conclusions ')
 
 with st.expander('**Download final DS**'):
     
-    """Here can be downloaded the final dataset (with all the added columns and without the dropped ones) clicking on the dounload button below."""
+    """Here can be downloaded the final dataset (with all the added columns and without the dropped ones) clicking on the download button below."""
     def dl_ds (ds):
         return ds.to_csv().encode('utf-8') 
 
