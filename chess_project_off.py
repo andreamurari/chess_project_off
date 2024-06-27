@@ -48,7 +48,7 @@ with st.expander('**General informations**'):
     *  Black Player ID;
     *  Black Player Rating;
     *  All Moves in Standard Chess Notation;
-    *  Opening Eco (Standardised Code for any given opening, list here);
+    *  Opening Eco (Standardised Code for any given opening);
     *  Opening Name;
     *  Opening Ply (Number of moves in the opening phase);
     """
@@ -404,7 +404,7 @@ with st.expander ('**Regression model**'):
     #CHECKBOX FOR LOGIT MODEL
     if st.checkbox('SHOW REGRESSION MODEL'):
         stats    
-    """It can be noticed that 'turns' has a positive coefficent, while 'rating_diff' has negative coefficent, as expected ."""
+    """It can be noticed that 'turns' has a positive coefficent, while 'rating_diff' has negative coefficent, as expected."""
 
 st.subheader("D. What are the best opening moves for white player? And for black one?")
 
