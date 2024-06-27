@@ -213,7 +213,7 @@ with st.expander('**How the situation changes when matches became longer in term
 
     """***MANY-TURNS MATCHES***"""
     
-    """It can be noticed that the percentage of white winning in many-turns matches (1%) is decreased compared to the original data set matches (4%)."""
+    """It can be noticed that the difference in percentage of white player's wins over black one in many-turns matches (1%) is decreased compared to the original data set matches (4%)."""
     
     #DISTRIBUTION CHART
     fig_ocmtd, ax = plt.subplots(figsize=(4.3,4))
@@ -262,7 +262,7 @@ with st.expander('**How the situation changes when matches became longer in term
     plt.pie(ftm_winner_df, labels = ftm_winner_df.index, autopct = '%.1f%%', colors = ('skyblue', 'pink', 'red'))
     plt.title('Pie-chart of few-turns matches outcomes')
     
-    """By contrast, the percentage of white winning in the few-turns matches DF is increased (13%) as you can see in the following charts: """
+    """By contrast, the difference in percentage of white player's wins over black one, in the few-turns matches DF, is increased (13%) as you can see in the following charts: """
 
     col_16, col_17, col_18 = st.columns(3) 
     
@@ -431,7 +431,14 @@ with st.expander('**Data-set adaptation**'):
         if st.checkbox('SHOW BLACK DF'):
             co_black_win_pct_df
 
-    """Now, in order to compare white and black best opening moves, it's generated a new DF as follows:"""
+    """Now, in order to compare white and black best opening moves, it's generated a new DF called '*delta_pct*' as follows: """
+    st.code("""    
+    delta = common_open_black_win_df - common_open_white_win_df
+    delta.fillna(co_black_win_df, inplace = True)
+    delta.fillna(co_white_win_df, inplace = True)
+    delta_pct = delta / (co_black_win_df + co_white_win_df)
+    delta_pct.fillna(delta / co_black_win_df, inplace = True)
+    delta_pct.fillna(delta / co_white_win_df, inplace = True)""", language="python")
 
     #GENERATING DF
     delta = co_black_win_df - co_white_win_df
