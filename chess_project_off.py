@@ -425,17 +425,17 @@ with st.expander('**Data-set adaptation**'):
     col_21, col_22, col_23, col_24 = st.columns(4)
     with col_22:
         if st.checkbox('SHOW WHITE DF'):   
-            co_white_win_pct_df
+            co_white_win_df
 
     with col_23:
         if st.checkbox('SHOW BLACK DF'):
-            co_black_win_pct_df
+            co_black_win_df
 
     """Now, in order to compare white and black best opening moves, it's generated a new DF called '*delta_pct*' as follows: """
     st.code("""    
     delta = common_open_black_win_df - common_open_white_win_df
     delta.fillna(co_black_win_df, inplace = True)
-    delta.fillna(co_white_win_df, inplace = True)
+    delta.fillna(co_white_win_df + (-1), inplace = True)
     delta_pct = delta / (co_black_win_df + co_white_win_df)
     delta_pct.fillna(delta / co_black_win_df, inplace = True)
     delta_pct.fillna(delta / co_white_win_df, inplace = True)""", language="python")
@@ -443,7 +443,7 @@ with st.expander('**Data-set adaptation**'):
     #GENERATING DF
     delta = co_black_win_df - co_white_win_df
     delta.fillna(co_black_win_df, inplace = True)
-    delta.fillna(co_white_win_df, inplace = True)
+    delta.fillna(co_white_win_df * (-1), inplace = True)
     delta_pct = delta / (co_black_win_df + co_white_win_df)
     delta_pct.fillna(delta / co_black_win_df, inplace = True)
     delta_pct.fillna(delta / co_white_win_df, inplace = True)
@@ -453,7 +453,7 @@ with st.expander('**Data-set adaptation**'):
     
     with col_26:
         if st.checkbox('SHOW DELTA DF'):
-            delta_pct
+            delta
 
 with st.expander('**Plots and analysis**'):
 
@@ -490,8 +490,8 @@ with st.expander('**Plots and analysis**'):
     
     if st.checkbox('SHOW COMBINED DELTA CHART'):
         st.pyplot(fig_comb_delta)
-    """**NOTE:** C40 can be considered the best opening move for black player with an efficiency of almost 100%. This happens because C40 is rarely linked to 
-    a victory by the white player, so it received a FALSE boolean value in the "common_opening_white_win_mask"."""
+    """**NOTE:** C40 can be considered the best opening move for white player with an efficiency of almost 100%. This happens because C40 is rarely linked to 
+    a victory by the black player, so it received a FALSE boolean value in the "common_opening_black_win_mask"."""
 
     """From this DF will be removed all the values under 10%: these opening moves are considered only because they are quite frequently used 
     but they are not linked to a significant difference of winning probability."""
@@ -514,33 +514,34 @@ with st.expander('**Plots and analysis**'):
 
     """This graph highlights that:"""
 
-    """*   **C40** is the best opening move for black player, but also **A00** and **B20** will probably lead to a win;"""
+    """*   **A00** and **B20** will more probably lead to a win for black player compared to all other openings;"""
   
     col_28, col_29, col_30, col_31, col_32, = st.columns(5)
   
     #BUTTONS FOR OPENINGS LINK
-    with col_28:
+    with col_29:
             st.link_button('LOOK AT A00', 'https://chessopenings.com/eco/A00/1/')
     
-    with col_30:
+    with col_31:
             st.link_button('LOOK AT B20', 'https://chessopenings.com/eco/B20/1/')
-    with col_32:
-        st.link_button('LOOK AT C40', 'https://chessopenings.com/eco/C40/1/')
     
-    """*   **A40**, **B00** and **C41** are the best opening options for white player."""
+    """*   **C40** is the best opening move for white player, but also **A40**, **B00** and **C41** are the good choice."""
    
-    col_33, col_34, col_35, col_36, col_37, = st.columns(5)
+    col_33, col_34, col_35, col_36 = st.columns(4)
    
     #BUTTONS FOR OPENINGS LINK
     with col_33:
         st.link_button('LOOK AT A40', 'https://chessopenings.com/eco/A40/1/')
     
-    with col_35:
+    with col_34:
             st.link_button('LOOK AT B00', 'https://chessopenings.com/eco/B00/1/')
     
-    with col_37:
+    with col_35:
             st.link_button('LOOK AT C41', 'https://chessopenings.com/eco/C41/1/')
 
+    with col_36:
+        st.link_button('LOOK AT C40', 'https://chessopenings.com/eco/C40/1/')
+    
     
 st.subheader('E. Data-set download and conclusions ')
 
