@@ -425,11 +425,11 @@ with st.expander('**Data-set adaptation**'):
     col_21, col_22, col_23, col_24 = st.columns(4)
     with col_22:
         if st.checkbox('SHOW WHITE DF'):   
-            co_white_win_df
+            co_white_win_pct_df
 
     with col_23:
         if st.checkbox('SHOW BLACK DF'):
-            co_black_win_df
+            co_black_win_pct_df
 
     """Now, in order to compare white and black best opening moves, it's generated a new DF called '*delta_pct*' as follows: """
     st.code("""    
@@ -453,7 +453,7 @@ with st.expander('**Data-set adaptation**'):
     
     with col_26:
         if st.checkbox('SHOW DELTA DF'):
-            delta
+            delta_pct
 
 with st.expander('**Plots and analysis**'):
 
