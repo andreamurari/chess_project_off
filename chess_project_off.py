@@ -560,5 +560,5 @@ with st.expander('**Final statements**'):
     """* moving first slightly favours the white player but this effect is less pronounced as the number of turns increases (the number of draws increases exponentially). 
     This happens because chess is a game which tends to be fair to both players;"""
     """* the increase rating difference between the two players implies a slight decrease on the probability of a draw;"""
-    """* **C40**, **A00** and **B20** can lead more probably to a black player win;"""
-    """* **A40**, **B00** and **C41** can lead more probably to a white player win."""
+    """* **A00** and **B20** can lead more probably to a black player win;"""
+    """* **A40**, **B00**, **C40**, and **C41** can lead more probably to a white player win."""
